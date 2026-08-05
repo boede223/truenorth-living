@@ -156,24 +156,25 @@ Python 3 is already on every Mac; there is nothing to install.
 
 ### One-time setup
 
-1. **Put this folder on GitHub.** Create a free account at github.com, make a
-   new repository (call it `truenorth-living`), and follow the "push an
-   existing repository" instructions it gives you.
+The editor is already pointed at `boede223/truenorth-living`, and the git
+remote is already set. Steps 1 and 2 are what's left.
 
-2. **Connect Netlify.** Sign up free at netlify.com → *Add new site* →
-   *Import an existing project* → pick your GitHub repo. Netlify reads
-   `netlify.toml` and configures itself — build command and publish directory
-   are already set. Click deploy.
+1. **Create the repository.** On github.com, *New repository* → name it exactly
+   `truenorth-living` → **don't** add a README, .gitignore, or licence
+   (this folder already has them). Create.
 
-3. **Point the editor at your repo.** Open `admin/config.yml`, find this line
-   near the top:
+2. **Push this folder up:**
 
-   ```yaml
-   repo: YOUR-GITHUB-USERNAME/truenorth-living   # ← CHANGE THIS
+   ```bash
+   cd ~/TrueNorth && git push -u origin main
    ```
 
-   Replace it with your actual GitHub username and repo name. Save, commit,
-   push.
+   GitHub will ask you to sign in the first time.
+
+3. **Connect Netlify.** Sign up free at netlify.com → *Add new site* →
+   *Import an existing project* → pick `truenorth-living`. Netlify reads
+   `netlify.toml` and configures itself — build command and publish directory
+   are already set. Click deploy.
 
 4. **Turn on form submissions.** In Netlify: *Site configuration* → *Forms* →
    enable form detection. Then *Forms* → *Form notifications* → add an email

@@ -18,7 +18,8 @@
       "Read(//Users/bo/.config/**)",
       "Read(//Users/bo/**)",
       "Bash(git add *)",
-      "Bash(git -c user.email=admin@thetruenorthliving.com -c user.name=TrueNorth commit -q -m ' *)"
+      "Bash(git -c user.email=admin@thetruenorthliving.com -c user.name=TrueNorth commit -q -m ' *)",
+      "Bash(git remote *)"
     ]
   }
 }

@@ -4,13 +4,14 @@
 # This file tells the editor at /admin/ what you're allowed to change and what
 # each field is called. If you add a new field here, add it to build.py too.
 #
-# ⚠️  ONE THING TO EDIT BEFORE THIS WORKS:
-#     Change `repo:` below to your own GitHub username and repository name.
+# The `repo:` line below only matters for the LIVE editor at
+# thetruenorthliving.com/admin/. Editing locally via "Work with Local
+# Repository" ignores it entirely and needs no GitHub account.
 # =============================================================================
 
 backend:
   name: github
-  repo: YOUR-GITHUB-USERNAME/truenorth-living   # ← CHANGE THIS
+  repo: boede223/truenorth-living
   branch: main
 
 # Publish straight to the live site (no draft/review step).
