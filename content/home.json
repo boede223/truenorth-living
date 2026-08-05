@@ -1,0 +1,70 @@
+{
+  "meta_title": "TrueNorth Living — Sober Living Homes in North Texas",
+  "meta_description": "Structured, peer-supported sober living homes in Dallas, Denton, and Arlington. Real beds, honest availability, and people who answer the phone. Apply in under five minutes.",
+  "hero": {
+    "eyebrow": "Dallas · Denton · Arlington",
+    "title": "Somebody left the light on.",
+    "subtitle": "TrueNorth Living runs small, structured sober living homes across North Texas. No waiting rooms. No runaround. Call us and a person picks up.",
+    "primary_cta": "Apply for a bed",
+    "primary_cta_href": "/apply/",
+    "secondary_cta": "See our houses",
+    "secondary_cta_href": "/homes/",
+    "video": "",
+    "poster": ""
+  },
+  "path_title": "What the next ninety days actually look like",
+  "path_intro": "Nobody hands you a brochure and wishes you luck. Here is the real shape of it.",
+  "path": [
+    {
+      "label": "You reach out",
+      "detail": "A phone call or a form at 3am. We answer, we ask a few questions, and we tell you straight whether we have a bed and whether we're the right fit. If we're not, we'll tell you who is."
+    },
+    {
+      "label": "You move in",
+      "detail": "Usually within 48 hours. You get a bed, a key, a drawer, and a house that already knows your name. First week you're just finding the coffee."
+    },
+    {
+      "label": "You find footing",
+      "detail": "Weekly house meeting, daily check-in, a curfew that loosens as you earn it. We help you get to work, to meetings, to court if that's where you need to be."
+    },
+    {
+      "label": "You go the distance",
+      "detail": "Most people stay six to nine months. Some become house leaders. Some move out and come back for Sunday dinner. The door doesn't close behind you."
+    }
+  ],
+  "pillars_title": "How we run a house",
+  "pillars": [
+    {
+      "title": "Small on purpose",
+      "body": "Six to ten residents per house. Big enough for a real community, small enough that your absence is noticed the same day."
+    },
+    {
+      "title": "Structure you can feel",
+      "body": "Curfew, chores, house meetings, and random testing. Not to punish — because the shape of a day is the thing most of us lost first."
+    },
+    {
+      "title": "Peer-led, not managed",
+      "body": "House leaders are residents who've been where you are. Staff support the house; the house runs itself. That's the part that sticks."
+    },
+    {
+      "title": "Honest about money",
+      "body": "One weekly rate, posted publicly. No intake fee, no surprise charges. If you hit a rough patch, come talk to us before you disappear."
+    }
+  ],
+  "proof_title": "In their words",
+  "testimonials": [
+    {
+      "quote": "I'd been through four places that felt like storage units for people. This was the first one that felt like an address.",
+      "attribution": "Resident, Oak Cliff House",
+      "note": "PLACEHOLDER — replace with a real, consented quote."
+    },
+    {
+      "quote": "My son called me from the porch on a Tuesday just to talk. That hadn't happened in three years.",
+      "attribution": "Parent of a resident, Denton",
+      "note": "PLACEHOLDER — replace with a real, consented quote."
+    }
+  ],
+  "cta_title": "There's probably a bed tonight.",
+  "cta_body": "Availability changes daily. Call and we'll tell you exactly what's open right now — no sales pitch, no pressure.",
+  "cta_button": "Start an application"
+}

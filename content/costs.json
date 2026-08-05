@@ -1,0 +1,47 @@
+{
+  "meta_title": "Cost & Payment — TrueNorth Living Sober Living Homes",
+  "meta_description": "What sober living costs at TrueNorth Living in North Texas: weekly rates, what's included, what insurance does and doesn't cover, and financial assistance options.",
+  "hero_title": "What it costs, in plain numbers.",
+  "hero_body": "Most people asking this question are doing math in a parking lot. So here it is up front, with nothing buried below the fold.",
+  "rates_title": "Rates",
+  "rates_note": "Rates are per person, per week, and are set per house. See each house for its exact rate.",
+  "included_title": "What's included",
+  "included": [
+    "Your bed, furnished, in a shared or private room depending on the house",
+    "All utilities — water, electric, gas, internet",
+    "Basic household supplies and cleaning products",
+    "Drug and alcohol testing",
+    "House meetings and peer support",
+    "Help getting to work, meetings, and appointments"
+  ],
+  "not_included_title": "What's not included",
+  "not_included": [
+    "Groceries and personal food",
+    "Personal toiletries",
+    "Phone, transportation, and personal expenses",
+    "Clinical treatment, therapy, or medication (we help you connect to these — we don't provide them)"
+  ],
+  "insurance_title": "Insurance, honestly",
+  "insurance_body": "Sober living is housing, not clinical treatment, so health insurance usually does not pay for it directly. Be skeptical of any operator who tells you otherwise. What insurance can cover is the clinical care you receive while living here — outpatient programs, counseling, and medication-assisted treatment. We'll help you line those up.",
+  "assistance_title": "If you can't cover it",
+  "assistance_body": "Say so before you're behind, not after. Options we can walk you through:",
+  "assistance": [
+    {
+      "title": "Scholarship beds",
+      "body": "PLACEHOLDER — Describe your scholarship or reduced-rate program, how many beds, and how someone applies. Delete this item if you don't offer one."
+    },
+    {
+      "title": "Payment plans",
+      "body": "PLACEHOLDER — Describe what flexibility you actually offer. Only promise what you'll honor."
+    },
+    {
+      "title": "Texas HHSC recovery support",
+      "body": "Some Texas residents qualify for state-funded recovery support services. We'll help you find out whether you do."
+    },
+    {
+      "title": "Employment first",
+      "body": "Most residents are working within three weeks. We treat that as part of the program, not a side quest."
+    }
+  ],
+  "faq_teaser": "Still have questions about money, rules, or how admission works?"
+}

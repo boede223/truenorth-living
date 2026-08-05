@@ -1,0 +1,21 @@
+{
+  "meta_title": "Apply for a Bed — TrueNorth Living, North Texas",
+  "meta_description": "Apply for a sober living bed in Dallas, Denton, or Arlington. Takes about five minutes. We respond the same day, usually within an hour.",
+  "hero_title": "Let's find you a bed.",
+  "hero_body": "Five minutes, twelve questions, no account to create. We read every one of these ourselves and respond the same day — usually within the hour.",
+  "reassurance_title": "Before you start",
+  "reassurance": [
+    "You can apply for yourself or for someone else.",
+    "Nothing here is a commitment. It starts a conversation.",
+    "We don't share your information with treatment centers, marketers, or anyone else. Ever.",
+    "If it's easier to just call, call. The number is at the top of this page."
+  ],
+  "success_title": "We've got it.",
+  "success_body": "Someone from TrueNorth will reach out today. If it's urgent, call us now rather than waiting on the reply.",
+  "after_title": "What happens next",
+  "after": [
+    { "step": "Today", "detail": "We call or text you back and ask a few follow-up questions." },
+    { "step": "Within a day", "detail": "A short phone interview — mostly us listening — and a straight answer on availability." },
+    { "step": "Move-in", "detail": "Usually within 48 hours of approval. Bring clothes, medication, and ID. We'll cover the rest on day one." }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "org_name": "TrueNorth Living",
+  "tagline": "Sober living homes in North Texas",
+  "domain": "https://www.thetruenorthliving.com",
+  "phone": "(214) 555-0134",
+  "email": "admin@thetruenorthliving.com",
+  "street": "PLACEHOLDER — 1234 Main St, Suite 100",
+  "city": "Dallas",
+  "state": "TX",
+  "zip": "75201",
+  "hours": "Calls answered 24/7",
+  "founded": "2026",
+  "crisis_label": "In crisis or need help now?",
+  "crisis_line": "988",
+  "crisis_line_label": "988 Suicide & Crisis Lifeline",
+  "samhsa_line": "1-800-662-4357",
+  "footer_note": "TrueNorth Living operates recovery residences in North Texas. We are not a licensed medical or clinical treatment facility. If you are experiencing a medical emergency, call 911.",
+  "social": {
+    "facebook": "",
+    "instagram": "",
+    "google_maps": ""
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "meta_title": "About TrueNorth Living — Recovery Housing in North Texas",
+  "meta_description": "Who we are, how our sober living homes are run, and what we believe about recovery housing in Dallas, Denton, and Arlington.",
+  "hero_title": "True north is a direction, not a destination.",
+  "hero_body": "You don't arrive at it. You just keep checking whether you're still pointed the right way — and it helps to have people around who'll tell you when you're not.",
+  "story_title": "Why we started",
+  "story_body": "PLACEHOLDER — This is where your story goes, and it will do more work than any other paragraph on this site. People choosing a sober living home are trying to answer one question: can I trust these people with someone I love? Tell them plainly. Who started TrueNorth, what you saw that made you do it, and what you refuse to do. Two or three short paragraphs. Write it the way you'd say it out loud.",
+  "values_title": "What we hold to",
+  "values": [
+    {
+      "title": "A house, not a facility",
+      "body": "Residents have keys. Residents cook. Residents vote on house issues. Nobody is a patient here."
+    },
+    {
+      "title": "Dignity is not a reward",
+      "body": "You don't earn respect by staying sober long enough. It's the starting condition, and it's not revocable."
+    },
+    {
+      "title": "We say the hard thing early",
+      "body": "If a house isn't working for someone, we have that conversation while there's still time to fix it — not at the point of exit."
+    },
+    {
+      "title": "Recovery outlasts residency",
+      "body": "Alumni keep house keys to the Sunday dinner. The relationship doesn't end when the rent does."
+    }
+  ],
+  "standards_title": "Standards and accountability",
+  "standards_body": "Texas does not license sober living homes at the state level, which means the burden of proving quality falls on operators. We think that's worth taking seriously rather than hiding behind.",
+  "standards": [
+    {
+      "title": "NARR / TROHN alignment",
+      "body": "PLACEHOLDER — The Texas Recovery Oriented Housing Network (TROHN) is the state affiliate of the National Alliance for Recovery Residences and the recognized certifying body in Texas. State whether you are certified, in process, or aligned with the standards. Do not claim certification you do not hold."
+    },
+    {
+      "title": "Fair housing",
+      "body": "People in recovery are protected under the Fair Housing Act and the Americans with Disabilities Act. We follow those protections in every admission decision."
+    },
+    {
+      "title": "Clear house agreement",
+      "body": "Every resident signs a written agreement covering rate, rules, testing, guests, and the grievance process. You get a copy before you move in, not after."
+    }
+  ],
+  "team_title": "Who you'll actually talk to",
+  "team": [
+    {
+      "name": "PLACEHOLDER — Name",
+      "role": "Founder & Director",
+      "photo": "",
+      "bio": "One or two sentences. What they do here, and one true human detail. Credentials if relevant (LCDC, CPRS, peer specialist)."
+    },
+    {
+      "name": "PLACEHOLDER — Name",
+      "role": "House Manager, Oak Cliff",
+      "photo": "",
+      "bio": "One or two sentences."
+    }
+  ]
+}

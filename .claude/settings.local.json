@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "WebFetch(domain:www.oxfordhousetx.org)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:sveltiacms.app)",
+      "Bash(git init *)",
+      "Bash(python3 build.py)",
+      "Bash(python3 /private/tmp/claude-501/-Users-bo-TrueNorth/1b4236fa-04bd-4c14-afb8-7518da6d5533/scratchpad/audit.py)",
+      "Bash(python3 -)"
+    ]
+  }
+}

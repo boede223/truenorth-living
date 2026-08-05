@@ -1,0 +1,48 @@
+{
+  "meta_title": "FAQ — TrueNorth Living Sober Living, North Texas",
+  "meta_description": "Common questions about admission, rules, cost, length of stay, visitors, and relapse policy at TrueNorth Living sober living homes in North Texas.",
+  "hero_title": "Questions people actually ask.",
+  "hero_body": "Mostly at 11pm, mostly on a phone. If yours isn't here, call us.",
+  "faqs": [
+    {
+      "q": "How fast can I move in?",
+      "a": "Often within 48 hours of your application if a bed is open. If nothing is open at the house you want, we'll tell you where you sit on the waitlist and give you a real estimate — not a maybe."
+    },
+    {
+      "q": "Do I have to be detoxed first?",
+      "a": "Yes. Sober living is not detox and not a treatment facility. You need to be medically stable and past withdrawal before moving in. If you're not there yet, call us anyway and we'll help you find a detox or treatment program first."
+    },
+    {
+      "q": "How long do people stay?",
+      "a": "Most residents stay six to nine months. There's no maximum. The research is consistent that longer stays predict better outcomes, so we won't push you out on a schedule."
+    },
+    {
+      "q": "What happens if someone relapses?",
+      "a": "PLACEHOLDER — This is the single most-read answer on most sober living sites. Be specific and honest about your actual policy: what happens the same day, whether there's a path back, and how you handle the safety of the rest of the house. Vague answers here cost you trust."
+    },
+    {
+      "q": "Can I keep my job?",
+      "a": "You're expected to. Work, school, or structured volunteering is part of the program. We schedule house obligations around normal working hours wherever we can."
+    },
+    {
+      "q": "Can I have visitors?",
+      "a": "PLACEHOLDER — Describe your guest policy: approved visitors, hours, common areas only, overnight rules."
+    },
+    {
+      "q": "Do you take people on MAT (Suboxone, methadone, Vivitrol)?",
+      "a": "PLACEHOLDER — State your policy clearly. Medication-assisted treatment is evidence-based care and many people search specifically for houses that accept it. If you do, say so plainly — it will bring you residents."
+    },
+    {
+      "q": "Are you a men's or women's house?",
+      "a": "Both, in separate houses. TrueNorth does not operate co-ed residences. Oak Cliff and Denton are men's houses; Arlington is a women's house."
+    },
+    {
+      "q": "Is my information private?",
+      "a": "Yes. We don't confirm or deny that anyone lives here to callers, including family, without that resident's written permission."
+    },
+    {
+      "q": "What if I have a court order or probation requirement?",
+      "a": "Bring the paperwork. We work with probation officers, drug courts, and parole regularly, and we can provide residency verification and compliance letters."
+    }
+  ]
+}

@@ -1,0 +1,278 @@
+# =============================================================================
+# TrueNorth Living — admin panel configuration
+#
+# This file tells the editor at /admin/ what you're allowed to change and what
+# each field is called. If you add a new field here, add it to build.py too.
+#
+# ⚠️  ONE THING TO EDIT BEFORE THIS WORKS:
+#     Change `repo:` below to your own GitHub username and repository name.
+# =============================================================================
+
+backend:
+  name: github
+  repo: YOUR-GITHUB-USERNAME/truenorth-living   # ← CHANGE THIS
+  branch: main
+
+# Publish straight to the live site (no draft/review step).
+publish_mode: simple
+
+# Where uploaded photos and videos are stored.
+media_folder: assets/img/uploads
+public_folder: /assets/img/uploads
+
+site_url: https://www.thetruenorthliving.com
+
+collections:
+  # ---------------------------------------------------------------------------
+  - name: houses
+    label: Houses & Availability
+    icon: home
+    files:
+      - name: homes
+        label: Houses
+        file: content/homes.json
+        description: >-
+          Add, remove, or update a house — and change how many beds are open.
+          This is the page you'll open most often.
+        fields:
+          - { label: "Page heading", name: intro_title, widget: string }
+          - { label: "Page intro", name: intro_body, widget: text }
+          - label: Houses
+            name: homes
+            widget: list
+            label_singular: House
+            summary: "{{fields.name}} — {{fields.beds_open}} of {{fields.beds_total}} open"
+            collapsed: false
+            fields:
+              - { label: "House name", name: name, widget: string, hint: "e.g. Oak Cliff House" }
+              - { label: "City", name: city, widget: string, hint: "e.g. Dallas, TX" }
+              - label: "Who lives here"
+                name: gender
+                widget: select
+                options: ["Men", "Women"]
+                default: "Men"
+              - label: "Availability"
+                name: status
+                widget: select
+                hint: "Controls the coloured dot on the site."
+                options:
+                  - { label: "Beds open", value: open }
+                  - { label: "Waitlist only", value: waitlist }
+                  - { label: "Completely full", value: full }
+                default: open
+              - { label: "Beds open right now", name: beds_open, widget: number, value_type: int, min: 0, default: 0 }
+              - { label: "Total beds", name: beds_total, widget: number, value_type: int, min: 1, default: 8 }
+              - { label: "Weekly rate (dollars, no $)", name: weekly_rate, widget: string, required: false, hint: "e.g. 175" }
+              - { label: "Photo", name: photo, widget: image, required: false, hint: "Landscape works best. Leave empty to show placeholder art." }
+              - { label: "Description", name: description, widget: text, hint: "Two or three sentences. Write it like you'd describe it to a friend." }
+              - label: "Highlights"
+                name: highlights
+                widget: list
+                field: { label: Highlight, name: highlight, widget: string }
+                hint: "Short phrases shown as tags. Three is plenty."
+
+  # ---------------------------------------------------------------------------
+  - name: pages
+    label: Pages
+    icon: file
+    files:
+      - name: home
+        label: Home page
+        file: content/home.json
+        fields:
+          - { label: "Browser tab title", name: meta_title, widget: string }
+          - { label: "Google search description", name: meta_description, widget: text, hint: "About 155 characters. This is what shows up under your link in Google." }
+          - label: "Hero (top of the page)"
+            name: hero
+            widget: object
+            fields:
+              - { label: "Small label above headline", name: eyebrow, widget: string }
+              - { label: "Headline", name: title, widget: string, hint: "The last word is styled in gold italic." }
+              - { label: "Subheading", name: subtitle, widget: text }
+              - { label: "Background video", name: video, widget: file, required: false, hint: "Optional. MP4, under 8 MB, no sound. Leave empty to use a photo instead." }
+              - { label: "Background photo", name: poster, widget: image, required: false, hint: "Also used as the video's first frame. Wide/landscape." }
+              - { label: "Main button text", name: primary_cta, widget: string }
+              - { label: "Main button link", name: primary_cta_href, widget: string }
+              - { label: "Second button text", name: secondary_cta, widget: string }
+              - { label: "Second button link", name: secondary_cta_href, widget: string }
+          - { label: "'Path North' heading", name: path_title, widget: string }
+          - { label: "'Path North' intro", name: path_intro, widget: text }
+          - label: "The path north (scrolling timeline)"
+            name: path
+            widget: list
+            label_singular: Step
+            summary: "{{fields.label}}"
+            fields:
+              - { label: "Step name", name: label, widget: string }
+              - { label: "What happens", name: detail, widget: text }
+          - { label: "'How we run a house' heading", name: pillars_title, widget: string }
+          - label: "How we run a house"
+            name: pillars
+            widget: list
+            label_singular: Point
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+          - { label: "Testimonials heading", name: proof_title, widget: string }
+          - label: Testimonials
+            name: testimonials
+            widget: list
+            label_singular: Quote
+            summary: "{{fields.attribution}}"
+            fields:
+              - { label: Quote, name: quote, widget: text }
+              - { label: "Who said it", name: attribution, widget: string, hint: "Use a role, not a full name, unless you have written permission." }
+              - { label: "Private note", name: note, widget: string, required: false, hint: "Not shown on the site." }
+          - { label: "Closing call-to-action heading", name: cta_title, widget: string }
+          - { label: "Closing call-to-action text", name: cta_body, widget: text }
+          - { label: "Closing button text", name: cta_button, widget: string }
+
+      - name: about
+        label: About page
+        file: content/about.json
+        fields:
+          - { label: "Browser tab title", name: meta_title, widget: string }
+          - { label: "Google search description", name: meta_description, widget: text }
+          - { label: Headline, name: hero_title, widget: string }
+          - { label: "Intro paragraph", name: hero_body, widget: text }
+          - { label: "'Why we started' label", name: story_title, widget: string }
+          - { label: "Your story", name: story_body, widget: text, hint: "Leave a blank line between paragraphs. This is the most important text on the site." }
+          - { label: "Values heading", name: values_title, widget: string }
+          - label: Values
+            name: values
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+          - { label: "Standards heading", name: standards_title, widget: string }
+          - { label: "Standards intro", name: standards_body, widget: text }
+          - label: Standards
+            name: standards
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+          - { label: "Team heading", name: team_title, widget: string }
+          - label: Team
+            name: team
+            widget: list
+            label_singular: Person
+            summary: "{{fields.name}} — {{fields.role}}"
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Role, name: role, widget: string }
+              - { label: Photo, name: photo, widget: image, required: false }
+              - { label: Bio, name: bio, widget: text }
+
+      - name: costs
+        label: Cost page
+        file: content/costs.json
+        description: "Weekly rates live on the Houses page — this page pulls them in automatically."
+        fields:
+          - { label: "Browser tab title", name: meta_title, widget: string }
+          - { label: "Google search description", name: meta_description, widget: text }
+          - { label: Headline, name: hero_title, widget: string }
+          - { label: "Intro paragraph", name: hero_body, widget: text }
+          - { label: "Rates label", name: rates_title, widget: string }
+          - { label: "Note under rates", name: rates_note, widget: text }
+          - { label: "'What's included' label", name: included_title, widget: string }
+          - label: "What's included"
+            name: included
+            widget: list
+            field: { label: Item, name: item, widget: string }
+          - { label: "'Not included' label", name: not_included_title, widget: string }
+          - label: "What's not included"
+            name: not_included
+            widget: list
+            field: { label: Item, name: item, widget: string }
+          - { label: "Insurance label", name: insurance_title, widget: string }
+          - { label: "Insurance explanation", name: insurance_body, widget: text }
+          - { label: "Assistance heading", name: assistance_title, widget: string }
+          - { label: "Assistance intro", name: assistance_body, widget: text }
+          - label: "Financial assistance options"
+            name: assistance
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+          - { label: "Closing line", name: faq_teaser, widget: string }
+
+      - name: faq
+        label: FAQ page
+        file: content/faq.json
+        fields:
+          - { label: "Browser tab title", name: meta_title, widget: string }
+          - { label: "Google search description", name: meta_description, widget: text }
+          - { label: Headline, name: hero_title, widget: string }
+          - { label: "Intro paragraph", name: hero_body, widget: text }
+          - label: Questions
+            name: faqs
+            widget: list
+            label_singular: Question
+            summary: "{{fields.q}}"
+            fields:
+              - { label: Question, name: q, widget: string }
+              - { label: Answer, name: a, widget: text, hint: "Leave a blank line between paragraphs." }
+
+      - name: apply
+        label: Application page
+        file: content/apply.json
+        description: "Text around the form. The form fields themselves are set in build.py."
+        fields:
+          - { label: "Browser tab title", name: meta_title, widget: string }
+          - { label: "Google search description", name: meta_description, widget: text }
+          - { label: Headline, name: hero_title, widget: string }
+          - { label: "Intro paragraph", name: hero_body, widget: text }
+          - { label: "Sidebar heading", name: reassurance_title, widget: string }
+          - label: "Sidebar reassurances"
+            name: reassurance
+            widget: list
+            field: { label: Item, name: item, widget: string }
+          - { label: "Thank-you heading", name: success_title, widget: string }
+          - { label: "Thank-you text", name: success_body, widget: text }
+          - { label: "'What happens next' heading", name: after_title, widget: string }
+          - label: "What happens next"
+            name: after
+            widget: list
+            summary: "{{fields.step}}"
+            fields:
+              - { label: When, name: step, widget: string }
+              - { label: What, name: detail, widget: text }
+
+  # ---------------------------------------------------------------------------
+  - name: settings
+    label: Contact & Settings
+    icon: settings
+    files:
+      - name: site
+        label: Contact details
+        file: content/site.json
+        description: "Phone number, address, and the crisis bar at the top of every page."
+        fields:
+          - { label: "Organization name", name: org_name, widget: string }
+          - { label: Tagline, name: tagline, widget: string }
+          - { label: "Website address", name: domain, widget: string, hint: "Include https:// and no trailing slash." }
+          - { label: "Phone number", name: phone, widget: string, hint: "Shown everywhere and used for tap-to-call." }
+          - { label: "Email address", name: email, widget: string }
+          - { label: "Street address", name: street, widget: string }
+          - { label: City, name: city, widget: string }
+          - { label: State, name: state, widget: string }
+          - { label: "ZIP code", name: zip, widget: string }
+          - { label: "Phone hours", name: hours, widget: string }
+          - { label: "Year founded", name: founded, widget: string }
+          - { label: "Crisis bar label", name: crisis_label, widget: string }
+          - { label: "Crisis line number", name: crisis_line, widget: string }
+          - { label: "Crisis line name", name: crisis_line_label, widget: string }
+          - { label: "SAMHSA helpline", name: samhsa_line, widget: string }
+          - { label: "Footer legal note", name: footer_note, widget: text }
+          - label: "Social links"
+            name: social
+            widget: object
+            fields:
+              - { label: Facebook, name: facebook, widget: string, required: false }
+              - { label: Instagram, name: instagram, widget: string, required: false }
+              - { label: "Google Maps listing", name: google_maps, widget: string, required: false }
