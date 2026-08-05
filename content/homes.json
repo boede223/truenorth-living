@@ -1,54 +1,29 @@
 {
   "intro_title": "Our houses",
-  "intro_body": "Every TrueNorth house is a real home on a real street — not a facility. Small by design, so nobody disappears into the crowd. Availability below is updated by our team, not a guess.",
+  "intro_body": "Every TrueNorth house will be a real home on a real street — not a facility. Small by design, so nobody disappears into the crowd.",
+
+  "empty_title": "Our first house is opening soon.",
+  "empty_body": "We're getting the first TrueNorth house ready in North Texas right now. If you or someone you love is looking for a bed, get on the list — we're filling it in the order people reach out, and we'll call you the moment a room is ready.",
+  "empty_cta": "Get on the list",
+  "prelaunch_pill": "Now taking applications for our first house",
+
   "homes": [
     {
-      "name": "Oak Cliff House",
+      "published": false,
+      "name": "PLACEHOLDER — Your first house",
       "city": "Dallas, TX",
       "gender": "Men",
       "beds_total": 8,
-      "beds_open": 3,
-      "status": "open",
+      "beds_open": 0,
+      "status": "waitlist",
       "weekly_rate": "175",
       "photo": "",
       "highlights": [
-        "Walkable to Bishop Arts",
-        "Two blocks from the bus line",
-        "House meeting every Sunday"
+        "Something about the location",
+        "Something about the amenities",
+        "Something about the routine"
       ],
-      "description": "A 1940s brick bungalow with a deep front porch and a backyard that gets used. Eight men, two house leaders, one rule everybody agrees to on day one."
-    },
-    {
-      "name": "Denton House",
-      "city": "Denton, TX",
-      "gender": "Men",
-      "beds_total": 10,
-      "beds_open": 1,
-      "status": "open",
-      "weekly_rate": "165",
-      "photo": "",
-      "highlights": [
-        "Near UNT campus",
-        "On-site laundry",
-        "Employment support on Tuesdays"
-      ],
-      "description": "Our largest house, and the one that runs the tightest. Good fit if you're working or in school and need structure that holds without hovering."
-    },
-    {
-      "name": "Arlington House",
-      "city": "Arlington, TX",
-      "gender": "Women",
-      "beds_total": 6,
-      "beds_open": 0,
-      "status": "waitlist",
-      "weekly_rate": "180",
-      "photo": "",
-      "highlights": [
-        "Women only",
-        "Children welcome for day visits",
-        "Quiet residential street"
-      ],
-      "description": "Six women, one kitchen table, and a standing Thursday dinner nobody skips. Currently full — the waitlist moves faster than you'd think."
+      "description": "PLACEHOLDER — Two or three sentences describing the house the way you'd describe it to a friend. What the building is like, how many people live there, and what one true thing makes it different. Flip 'Show on website' to Yes once this is real and the doors are open."
     }
   ]
 }

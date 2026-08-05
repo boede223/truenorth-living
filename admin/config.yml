@@ -33,10 +33,21 @@ collections:
         file: content/homes.json
         description: >-
           Add, remove, or update a house — and change how many beds are open.
-          This is the page you'll open most often.
+          This is the page you'll open most often. Press "Add House" at the
+          bottom of the list to add another one at any time.
         fields:
           - { label: "Page heading", name: intro_title, widget: string }
           - { label: "Page intro", name: intro_body, widget: text }
+          - label: "Before your first house opens"
+            name: empty_title
+            widget: string
+            hint: "Headline shown on the Houses page while no house is live yet."
+          - { label: "Pre-launch message", name: empty_body, widget: text }
+          - { label: "Pre-launch button text", name: empty_cta, widget: string }
+          - label: "Pre-launch homepage badge"
+            name: prelaunch_pill
+            widget: string
+            hint: "The gold pill on the homepage, e.g. 'Now taking applications for our first house'."
           - label: Houses
             name: homes
             widget: list
@@ -44,6 +55,14 @@ collections:
             summary: "{{fields.name}} — {{fields.beds_open}} of {{fields.beds_total}} open"
             collapsed: false
             fields:
+              - label: "Show on website"
+                name: published
+                widget: boolean
+                default: false
+                hint: >-
+                  Leave OFF while you're still setting the house up — it stays
+                  completely hidden from visitors. Switch ON when it's real and
+                  ready to take residents.
               - { label: "House name", name: name, widget: string, hint: "e.g. Oak Cliff House" }
               - { label: "City", name: city, widget: string, hint: "e.g. Dallas, TX" }
               - label: "Who lives here"
@@ -178,6 +197,9 @@ collections:
           - { label: "Intro paragraph", name: hero_body, widget: text }
           - { label: "Rates label", name: rates_title, widget: string }
           - { label: "Note under rates", name: rates_note, widget: text }
+          - label: "Shown instead of rates before any house is live"
+            name: rates_empty
+            widget: text
           - { label: "'What's included' label", name: included_title, widget: string }
           - label: "What's included"
             name: included

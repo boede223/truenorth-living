@@ -57,6 +57,30 @@ on its own, usually within a minute. It works fine on a phone.
 `Beds open right now`. That number drives the "4 beds open tonight" pill on the
 homepage and the coloured dot on each house card.
 
+### Adding a house
+
+Admin → **Houses & Availability** → scroll to the Houses list → **Add House**.
+Fill in the form, and it appears on the site everywhere houses are shown:
+the homepage grid, the Houses page, the Cost page rates table, the footer,
+and the dropdown on the application form. You never edit more than one place.
+
+Each house has a **Show on website** switch:
+
+- **Off** — the house is invisible to visitors. Use this while you're still
+  setting it up, negotiating the lease, or waiting on a certificate of
+  occupancy. You can fill in everything in advance and flip it on later.
+- **On** — it's live.
+
+**Before your first house is live**, the site doesn't show empty shelves. It
+switches to a pre-launch mode: the Houses page shows an "opening soon" notice
+with a call-to-action, the homepage badge reads "Now taking applications for
+our first house" instead of a bed count, the Cost page explains rates are being
+set, and the empty Houses column drops out of the footer. All of that copy is
+editable under Houses & Availability → *Before your first house opens*.
+
+The moment you switch one house on, everything reverts to normal availability
+mode by itself. Nothing to remember.
+
 ### Directly in the files (if you'd rather)
 
 Open any file in `content/` in a text editor and change the text between the
@@ -148,8 +172,9 @@ Highest impact first:
       site. Vagueness here costs you residents.
 - [ ] **MAT policy** — FAQ. Say plainly whether you accept Suboxone, methadone,
       and Vivitrol. People search for this specifically.
-- [ ] **Real house details** — names, cities, bed counts, rates. The three
-      houses currently listed are invented.
+- [ ] **Your first house**, once you have it — there's one template house
+      already in the admin with Show on website switched off. Fill it in and
+      switch it on. Until then the site runs in pre-launch mode on its own.
 - [ ] **House photos** — the biggest single trust signal on the site. Real
       photos of real porches beat any stock image. Until you upload them,
       cards show deliberate placeholder art rather than looking broken.
@@ -163,12 +188,17 @@ Highest impact first:
 - [ ] **Scholarship and payment-plan details** — Cost page. Only promise what
       you'll honor.
 
-### A note on the two claims already in the copy
+### A note on the claims already in the copy
 
 The homepage says calls are answered by a person and that move-in is usually
 within 48 hours. The footer says calls are answered 24/7. Those are good,
 concrete promises — which is exactly why you should only keep them if they're
 true. Change them in `content/home.json` and `content/site.json` if they're not.
+
+The "path north" timeline on the homepage and the "what happens next" steps on
+the application page both describe a process that isn't running yet. They read
+fine as a description of how things *will* work, but re-read them the week you
+open and make sure they match what actually happens.
 
 ---
 

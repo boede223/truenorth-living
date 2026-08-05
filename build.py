@@ -131,9 +131,25 @@ STATUS_LABEL = {
 # Availability
 # --------------------------------------------------------------------------
 
+def published_homes():
+    """Houses with 'Show on website' turned on.
+
+    A house can exist in the admin — half filled in, still being set up —
+    without appearing anywhere public. Everything user-facing goes through
+    this function, so an unpublished house is invisible site-wide.
+    """
+    return [h for h in HOMES.get("homes", []) if h.get("published", True)]
+
+
 def availability():
     """Aggregate open beds across all houses for the hero pill."""
-    homes = HOMES.get("homes", [])
+    homes = published_homes()
+
+    # Pre-launch: no houses are live yet. Say that plainly rather than
+    # implying we have houses that happen to be full.
+    if not homes:
+        return "soon", HOMES.get("prelaunch_pill", "Now taking applications")
+
     open_beds = 0
     cities = []
     for h in homes:
@@ -218,10 +234,18 @@ def shell(*, title, description, path, body, head_extra=""):
     )
     nav_links += '\n<a class="nav-apply" href="/apply/">Apply</a>'
 
-    footer_houses = "\n".join(
-        f'<li><a href="/homes/#{slugify(h["name"])}">{e(h["name"])}</a></li>'
-        for h in HOMES.get("homes", [])
-    )
+    # With no houses live yet, the footer column would be an empty heading.
+    live = published_homes()
+    if live:
+        footer_houses = f"""      <div>
+        <h2>Houses</h2>
+        <ul>{"".join(
+            f'<li><a href="/homes/#{slugify(h["name"])}">{e(h["name"])}</a></li>'
+            for h in live
+        )}</ul>
+      </div>"""
+    else:
+        footer_houses = ""
 
     return f"""<!doctype html>
 <html lang="en">
@@ -290,10 +314,7 @@ def shell(*, title, description, path, body, head_extra=""):
         <a class="brand" href="/">{LOGO}<span><b>True</b><i>North</i></span></a>
         <p>{e(SITE['tagline'])}. Serving Dallas, Denton, Arlington and the wider Metroplex.</p>
       </div>
-      <div>
-        <h2>Houses</h2>
-        <ul>{footer_houses}</ul>
-      </div>
+{footer_houses}
       <div>
         <h2>Site</h2>
         <ul>
@@ -414,6 +435,29 @@ def house_card(h, level=3):
 </article>"""
 
 
+def houses_block(level=3, limit=None):
+    """Render the house grid, or a pre-launch notice if nothing is live yet."""
+    homes = published_homes()
+    if limit:
+        homes = homes[:limit]
+
+    if homes:
+        return '<div class="houses">' + "\n".join(
+            house_card(h, level) for h in homes
+        ) + "</div>"
+
+    return f"""
+<div class="empty-state reveal">
+  <div class="empty-mark">{ICON_HOUSE}</div>
+  <h{level}>{e(HOMES.get('empty_title', 'Houses coming soon.'))}</h{level}>
+  <p>{e(HOMES.get('empty_body', ''))}</p>
+  <div class="btn-row">
+    <a class="btn" href="/apply/">{e(HOMES.get('empty_cta', 'Get on the list'))}</a>
+    <a class="btn btn--ghost" href="tel:{e(tel(SITE['phone']))}">{ICON_PHONE} {e(SITE['phone'])}</a>
+  </div>
+</div>"""
+
+
 # --------------------------------------------------------------------------
 # Pages
 # --------------------------------------------------------------------------
@@ -461,7 +505,8 @@ def build_index():
         for q in HOME.get("testimonials", [])
     )
 
-    featured = "\n".join(house_card(h) for h in HOMES.get("homes", [])[:3])
+    featured = houses_block(level=3, limit=3)
+    has_homes = bool(published_homes())
 
     # Split the headline so the last word can carry the italic accent.
     title = hero["title"]
@@ -518,16 +563,14 @@ def build_index():
 <section class="section">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">Available now</p>
+      <p class="eyebrow">{"Available now" if has_homes else "Opening soon"}</p>
       <h2>{e(HOMES['intro_title'])}</h2>
       <p class="lede">{e(HOMES['intro_body'])}</p>
     </div>
-    <div class="houses">
-      {featured}
-    </div>
-    <p style="margin-top:var(--sp-5)" class="reveal">
+    {featured}
+    {'''<p style="margin-top:var(--sp-5)" class="reveal">
       <a class="arrow-link" href="/homes/">See all houses and availability <span>&rarr;</span></a>
-    </p>
+    </p>''' if has_homes else ""}
   </div>
 </section>
 
@@ -554,28 +597,40 @@ def build_index():
 
 
 def build_homes():
-    cards = "\n".join(house_card(h, level=2) for h in HOMES.get("homes", []))
+    has_homes = bool(published_homes())
+
+    cta = (
+        ("Not sure which house fits?",
+         "Call and describe your situation. We'll tell you honestly which house is "
+         "the right one — or whether we're the wrong fit entirely.",
+         "Talk to us")
+        if has_homes else
+        ("Want to know the moment we open?",
+         "Get on the list and we'll call you before the beds are advertised anywhere else.",
+         "Get on the list")
+    )
+
     body = f"""
 {page_hero("Dallas · Denton · Arlington", HOMES["intro_title"], HOMES["intro_body"])}
 
 <section class="section">
   <div class="wrap">
-    <div class="houses">
-      {cards}
-    </div>
+    {houses_block(level=2)}
   </div>
 </section>
 
-{cta_band("Not sure which house fits?",
-          "Call and describe your situation. We'll tell you honestly which house is the right one — or whether we're the wrong fit entirely.",
-          "Talk to us")}
+{cta_band(*cta)}
 """
-    return shell(
-        title="Our Houses & Bed Availability — TrueNorth Living, North Texas",
-        description="Current bed availability at TrueNorth Living sober living homes in Dallas, Denton, and Arlington, Texas. Weekly rates, house details, and how to apply.",
-        path="/homes/",
-        body=body,
-    )
+    if has_homes:
+        title = "Our Houses & Bed Availability — TrueNorth Living, North Texas"
+        desc = ("Current bed availability at TrueNorth Living sober living homes in "
+                "North Texas. Weekly rates, house details, and how to apply.")
+    else:
+        title = "Our Houses — TrueNorth Living Sober Living, North Texas"
+        desc = ("TrueNorth Living is opening its first sober living house in North "
+                "Texas. Join the list to hear the moment beds are available.")
+
+    return shell(title=title, description=desc, path="/homes/", body=body)
 
 
 def build_about():
@@ -678,8 +733,12 @@ def build_costs():
       </p>
       <p>{e(h.get('city',''))} · {e(h.get('gender',''))} · {e(h.get('beds_total','?'))} beds</p>
     </div>"""
-        for h in HOMES.get("homes", [])
-    )
+        for h in published_homes()
+    ) or f"""
+    <div class="card reveal">
+      <h3>Rates are being set now</h3>
+      <p>{e(COSTS.get('rates_empty', 'We will post the exact weekly rate here the moment our first house opens. Call us and we will tell you what we are planning.'))}</p>
+    </div>"""
 
     included = "\n".join(f"<li>{e(i)}</li>" for i in COSTS.get("included", []))
     not_included = "\n".join(f"<li>{e(i)}</li>" for i in COSTS.get("not_included", []))
@@ -794,8 +853,18 @@ def build_faq():
 def build_apply():
     house_options = "\n".join(
         f'<option value="{e(h["name"])}">{e(h["name"])} — {e(h.get("city",""))} ({e(h.get("gender",""))})</option>'
-        for h in HOMES.get("homes", [])
+        for h in published_homes()
     )
+
+    # A "Which house?" dropdown with nothing in it just wastes the applicant's
+    # attention, so it only appears once at least one house is live.
+    house_field = f"""<div class="field">
+              <label for="house">Which house?</label>
+              <select id="house" name="house">
+                <option value="">No preference — help me choose</option>
+                {house_options}
+              </select>
+            </div>""" if house_options else ""
 
     reassurance = "\n".join(f"<li>{e(r)}</li>" for r in APPLY.get("reassurance", []))
 
@@ -868,13 +937,7 @@ def build_apply():
           </div>
 
           <div class="form-grid">
-            <div class="field">
-              <label for="house">Which house?</label>
-              <select id="house" name="house">
-                <option value="">No preference — help me choose</option>
-                {house_options}
-              </select>
-            </div>
+            {house_field}
             <div class="field">
               <label for="move_in">How soon?</label>
               <select id="move_in" name="move_in">

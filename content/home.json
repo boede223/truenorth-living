@@ -4,7 +4,7 @@
   "hero": {
     "eyebrow": "Dallas · Denton · Arlington",
     "title": "Somebody left the light on.",
-    "subtitle": "TrueNorth Living runs small, structured sober living homes across North Texas. No waiting rooms. No runaround. Call us and a person picks up.",
+    "subtitle": "TrueNorth Living is opening small, structured sober living homes across North Texas. No waiting rooms. No runaround. Call us and a person picks up.",
     "primary_cta": "Apply for a bed",
     "primary_cta_href": "/apply/",
     "secondary_cta": "See our houses",
@@ -55,16 +55,16 @@
   "testimonials": [
     {
       "quote": "I'd been through four places that felt like storage units for people. This was the first one that felt like an address.",
-      "attribution": "Resident, Oak Cliff House",
+      "attribution": "PLACEHOLDER — Resident, [house name]",
       "note": "PLACEHOLDER — replace with a real, consented quote."
     },
     {
       "quote": "My son called me from the porch on a Tuesday just to talk. That hadn't happened in three years.",
-      "attribution": "Parent of a resident, Denton",
+      "attribution": "PLACEHOLDER — Parent of a resident",
       "note": "PLACEHOLDER — replace with a real, consented quote."
     }
   ],
-  "cta_title": "There's probably a bed tonight.",
-  "cta_body": "Availability changes daily. Call and we'll tell you exactly what's open right now — no sales pitch, no pressure.",
-  "cta_button": "Start an application"
+  "cta_title": "Be first through the door.",
+  "cta_body": "We're filling our first house in the order people reach out. Get on the list and we'll call you before a single bed is advertised anywhere else.",
+  "cta_button": "Get on the list"
 }

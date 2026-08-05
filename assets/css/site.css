@@ -462,6 +462,13 @@ p { text-wrap: pretty; }
 }
 .dot--waitlist { background: var(--warn); }
 .dot--full { background: var(--full); }
+/* Pre-launch: no houses live yet, but we are taking applications. */
+.dot--soon { background: var(--amber); }
+.dot--soon::after {
+  content: ""; position: absolute; inset: -5px;
+  border-radius: 50%; border: 1px solid var(--amber);
+  animation: ping 2.6s var(--ease) infinite;
+}
 @keyframes ping {
   0%   { opacity: .8; transform: scale(.65); }
   75%  { opacity: 0;  transform: scale(1.5); }
@@ -633,6 +640,35 @@ p { text-wrap: pretty; }
   border: 1px solid rgba(246,242,233,.1);
   color: var(--text-dim);
 }
+
+/* Pre-launch notice, shown wherever house cards would go when none are live. */
+.empty-state {
+  padding: var(--sp-6) var(--sp-5);
+  text-align: center;
+  border: 1px dashed rgba(232,163,61,.35);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(80% 120% at 50% 0%, rgba(232,163,61,.09), transparent 65%),
+    var(--ink-2);
+}
+.empty-state h2, .empty-state h3 { font-size: var(--t-2xl); max-width: 20ch; margin-inline: auto; }
+.empty-state p {
+  max-width: 56ch;
+  margin: var(--sp-3) auto var(--sp-5);
+  color: var(--text-dim);
+}
+.empty-state .btn-row { justify-content: center; }
+.empty-mark {
+  width: 54px; height: 54px;
+  margin: 0 auto var(--sp-4);
+  display: grid; place-content: center;
+  border-radius: 50%;
+  color: var(--amber);
+  background: rgba(232,163,61,.1);
+  border: 1px solid rgba(232,163,61,.3);
+}
+.empty-mark svg { width: 26px; height: 26px; }
+.section--bone .empty-state { background: rgba(22,34,44,.04); border-color: rgba(184,122,34,.4); }
 
 /* ---------- 12. Quotes --------------------------------------------------- */
 .quotes {
