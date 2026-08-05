@@ -18,6 +18,7 @@ import os
 import re
 import shutil
 import sys
+import time
 from datetime import date
 from pathlib import Path
 
@@ -34,15 +35,29 @@ def load(name):
         return json.load(fh)
 
 
-SITE = load("site")
-HOME = load("home")
-HOMES = load("homes")
-ABOUT = load("about")
-COSTS = load("costs")
-FAQ = load("faq")
-APPLY = load("apply")
+SITE = HOME = HOMES = ABOUT = COSTS = FAQ = APPLY = None
+DOMAIN = ""
 
-DOMAIN = SITE.get("domain", "").rstrip("/")
+
+def reload_content():
+    """(Re)read every content file.
+
+    Called at startup and again on each rebuild in --serve mode — without
+    this, the watcher would rebuild using whatever JSON was loaded when the
+    process started and your edits would never show up.
+    """
+    global SITE, HOME, HOMES, ABOUT, COSTS, FAQ, APPLY, DOMAIN
+    SITE = load("site")
+    HOME = load("home")
+    HOMES = load("homes")
+    ABOUT = load("about")
+    COSTS = load("costs")
+    FAQ = load("faq")
+    APPLY = load("apply")
+    DOMAIN = SITE.get("domain", "").rstrip("/")
+
+
+reload_content()
 
 NAV = [
     ("/homes/", "Houses"),
@@ -1091,7 +1106,30 @@ def write(relpath, text):
     return dest
 
 
-def main():
+# Injected only when running with --serve, never into a deployed build.
+# Polls the build id and reloads the page when it changes, so saving in the
+# admin panel refreshes the site by itself.
+LIVERELOAD = """
+<script>
+(function () {
+  var current = null;
+  setInterval(function () {
+    fetch("/__buildid", { cache: "no-store" })
+      .then(function (r) { return r.text(); })
+      .then(function (id) {
+        if (current === null) { current = id; return; }
+        if (id !== current) location.reload();
+      })
+      .catch(function () {});
+  }, 1000);
+})();
+</script>
+"""
+
+
+def main(dev=False):
+    reload_content()
+
     # Empty the output directory without removing the directory itself — a
     # running `--serve` process has chdir'd into it, and deleting it would
     # kill the preview server every time you rebuild.
@@ -1130,6 +1168,13 @@ def main():
         "/contact      /apply/   301",
     ]) + "\n")
 
+    if dev:
+        build_id = str(time.time())
+        write("__buildid", build_id)
+        for page in OUT.rglob("*.html"):
+            text = page.read_text(encoding="utf-8")
+            page.write_text(text.replace("</body>", LIVERELOAD + "</body>"), encoding="utf-8")
+
     pages = len(PAGES)
     placeholders = sum(
         1 for p in OUT.rglob("*.html")
@@ -1138,18 +1183,47 @@ def main():
     print(f"✓ Built {pages} pages into {OUT.relative_to(ROOT)}/")
     if placeholders:
         print(f"  {placeholders} placeholder(s) still to replace — they're outlined in orange on the site.")
+    return placeholders
+
+
+def watch_signature():
+    """A cheap fingerprint of everything a build depends on."""
+    parts = []
+    for base in (CONTENT, ROOT / "assets", ROOT / "admin"):
+        if not base.exists():
+            continue
+        for f in sorted(base.rglob("*")):
+            if f.is_file() and not f.name.startswith("."):
+                parts.append(f"{f}:{f.stat().st_mtime_ns}")
+    bp = ROOT / "build.py"
+    parts.append(f"{bp}:{bp.stat().st_mtime_ns}")
+    return hash(tuple(parts))
 
 
 if __name__ == "__main__":
-    main()
-    if "--serve" in sys.argv:
+    serve = "--serve" in sys.argv
+    if serve:
+        # Line buffering, so watcher messages appear as they happen rather
+        # than sitting in a buffer while you wonder if anything is working.
+        sys.stdout.reconfigure(line_buffering=True)
+    main(dev=serve)
+
+    if serve:
         import http.server
         import socketserver
+        import threading
 
         os.chdir(OUT)
 
         class Handler(http.server.SimpleHTTPRequestHandler):
             """Serve /foo/ from foo/index.html and use 404.html for misses."""
+
+            def end_headers(self):
+                # Never cache during local editing, or you'll refresh and see
+                # the old page and think the build is broken.
+                self.send_header("Cache-Control", "no-store, must-revalidate")
+                super().end_headers()
+
             def send_error(self, code, message=None, explain=None):
                 if code == 404 and Path("404.html").exists():
                     body = Path("404.html").read_bytes()
@@ -1161,6 +1235,42 @@ if __name__ == "__main__":
                     return
                 super().send_error(code, message, explain)
 
+            def log_message(self, fmt, *args):
+                pass  # keep the console clear for build output
+
+        def watcher():
+            """Rebuild whenever content, assets, or build.py change."""
+            last = watch_signature()
+            while True:
+                time.sleep(1)
+                try:
+                    now = watch_signature()
+                except OSError:
+                    continue
+                if now == last:
+                    continue
+                last = now
+                here = os.getcwd()
+                try:
+                    os.chdir(ROOT)
+                    print("\n↻ change detected — rebuilding")
+                    main(dev=True)
+                    print("→ browser will refresh itself")
+                except Exception as exc:            # noqa: BLE001 - keep serving
+                    print(f"✗ build failed: {exc}")
+                    print("  the last good version is still being served")
+                finally:
+                    os.chdir(here)
+
+        threading.Thread(target=watcher, daemon=True).start()
+
+        socketserver.TCPServer.allow_reuse_address = True
         with socketserver.TCPServer(("", 8000), Handler) as httpd:
-            print("→ http://localhost:8000  (ctrl-c to stop)")
-            httpd.serve_forever()
+            print("→ http://localhost:8000        the site")
+            print("→ http://localhost:8000/admin/ the editor")
+            print("  watching for changes — edit and the page refreshes itself")
+            print("  (ctrl-c to stop)")
+            try:
+                httpd.serve_forever()
+            except KeyboardInterrupt:
+                print("\nstopped")

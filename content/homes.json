@@ -1,12 +1,10 @@
 {
   "intro_title": "Our houses",
   "intro_body": "Every TrueNorth house will be a real home on a real street — not a facility. Small by design, so nobody disappears into the crowd.",
-
   "empty_title": "Our first house is opening soon.",
   "empty_body": "We're getting the first TrueNorth house ready in North Texas right now. If you or someone you love is looking for a bed, get on the list — we're filling it in the order people reach out, and we'll call you the moment a room is ready.",
   "empty_cta": "Get on the list",
   "prelaunch_pill": "Now taking applications for our first house",
-
   "homes": [
     {
       "published": false,

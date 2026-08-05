@@ -7,11 +7,18 @@ are required to work on it locally.
 
 ## The 30-second version
 
-- **To change words, photos, prices, or bed counts:** go to `yoursite.com/admin/`.
-  Never touch code.
-- **To see it on your own machine:** run `python3 build.py --serve`, open
-  <http://localhost:8000>.
-- **To publish:** save in the admin panel. It goes live by itself in ~1 minute.
+**Right now, on this Mac, with no accounts:**
+
+```bash
+python3 build.py --serve
+```
+
+Open <http://localhost:8000/admin/> in Chrome → click **Work with Local
+Repository** → choose the `TrueNorth` folder. You get the full visual editor,
+and the site refreshes itself as you save.
+
+**After you deploy** (see below), the same editor lives at
+`yoursite.com/admin/` and publishes to the real site.
 
 ---
 
@@ -40,9 +47,45 @@ that matters more than anything else on this page.
 
 ## Editing the site
 
-### Through the admin panel (normal way)
+There are three ways in. They all change the same files, so you can mix them
+freely.
 
-Go to `yoursite.com/admin/`. You'll see four sections:
+### 1. The visual editor on your own Mac — works today, no accounts
+
+This is the one to start with. Nothing to sign up for, and nothing you do here
+is public until you deploy.
+
+1. Open Terminal, and run:
+
+   ```bash
+   cd ~/TrueNorth && python3 build.py --serve
+   ```
+
+2. Open **Chrome** (this needs Chrome or Edge — Safari and Firefox don't
+   support the folder-access feature yet) and go to
+   <http://localhost:8000/admin/>.
+
+3. Click **Work with Local Repository** and select your `TrueNorth` folder
+   when the picker appears. Grant access.
+
+You now have the full editor. Change something, hit Save, and the site at
+<http://localhost:8000> **refreshes itself** — no rebuilding, no reloading.
+Leave the site open in one tab and the editor in another and you can watch
+your changes land.
+
+Terminal stays running the whole time. Press `Ctrl+C` when you're done.
+
+If you break something (delete a comma in a file, say), the terminal prints the
+error and keeps serving the last version that worked. Fix it and it recovers on
+its own. You cannot get the site into a broken state this way.
+
+### 2. The visual editor on the live site — after you deploy
+
+Once the site is on Netlify, go to `yoursite.com/admin/` from anywhere,
+including your phone. Same editor, except Save publishes to the real site in
+about a minute.
+
+Either way, you'll see four sections:
 
 | Section | What's in it |
 | --- | --- |
@@ -81,30 +124,31 @@ editable under Houses & Availability → *Before your first house opens*.
 The moment you switch one house on, everything reverts to normal availability
 mode by itself. Nothing to remember.
 
-### Directly in the files (if you'd rather)
+### 3. Directly in the files
 
 Open any file in `content/` in a text editor and change the text between the
-quotation marks. Then run `python3 build.py`. Don't delete commas or braces.
+quotation marks. Don't delete commas, braces, or quotes. If `--serve` is
+running, the site updates as soon as you save. Otherwise run `python3 build.py`.
 
 ---
 
-## Running it locally
-
-You need Python 3, which is already on every Mac.
+## The two commands
 
 ```bash
 python3 build.py --serve
 ```
 
-Then open <http://localhost:8000>. Edit a file in `content/`, run
-`python3 build.py` in a second terminal, and refresh the browser. The preview
-server keeps running through rebuilds.
-
-To build without serving:
+Builds the site, serves it at <http://localhost:8000>, watches for changes, and
+auto-refreshes your browser. This is the one you want while working.
 
 ```bash
 python3 build.py
 ```
+
+Builds once and stops. You rarely need this — Netlify runs it for you on every
+deploy.
+
+Python 3 is already on every Mac; there is nothing to install.
 
 ---
 
