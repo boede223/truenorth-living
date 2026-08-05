@@ -274,7 +274,9 @@ p { text-wrap: pretty; }
   font-variation-settings: "SOFT" 30, "WONK" 1;
   flex: none;
 }
-.brand svg { width: 34px; height: 34px; flex: none; }
+/* The mark is taller than it is wide, so size it by height and let the
+   width follow. */
+.brand svg { height: 32px; width: auto; flex: none; }
 .brand b { font-weight: 600; }
 .brand i { font-style: normal; color: var(--amber); }
 

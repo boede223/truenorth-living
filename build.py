@@ -117,12 +117,14 @@ def ph_class(text, extra=""):
 # Inline SVG
 # --------------------------------------------------------------------------
 
-LOGO = """<svg viewBox="0 0 40 40" aria-hidden="true" fill="none">
-  <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"/>
-  <circle cx="20" cy="20" r="12.5" stroke="#E8A33D" stroke-opacity=".45" stroke-width="1"/>
-  <path d="M20 5.5 22.6 17.4 34.5 20 22.6 22.6 20 34.5 17.4 22.6 5.5 20 17.4 17.4Z" fill="#E8A33D"/>
-  <circle cx="20" cy="20" r="2.4" fill="#0C141C"/>
-</svg>"""
+# "Doorway" — a lit doorway with the north star cut out of it. The star is a
+# hole, not a shape, so it picks up whatever sits behind the mark and the logo
+# works on any background without a second colourway.
+DOORWAY_PATH = ("M22 90 L22 48 A28 28 0 0 1 78 48 L78 90 Z "
+                "M50 28 Q51.3 52 68 56 Q51.3 60 50 83 Q48.7 60 32 56 Q48.7 52 50 28 Z")
+
+LOGO = (f'<svg viewBox="20 18 60 74" aria-hidden="true">'
+        f'<path fill-rule="evenodd" fill="#E8A33D" d="{DOORWAY_PATH}"/></svg>')
 
 ROSE = """<svg class="cta-rose" viewBox="0 0 200 200" aria-hidden="true" fill="none" stroke="currentColor">
   <circle cx="100" cy="100" r="96" stroke-width=".6"/>
@@ -1074,12 +1076,14 @@ def build_404():
 # Static extras
 # --------------------------------------------------------------------------
 
-FAVICON = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
-  <rect width="40" height="40" rx="9" fill="#0C141C"/>
-  <circle cx="20" cy="20" r="13.5" fill="none" stroke="#E8A33D" stroke-opacity=".4" stroke-width="1.2"/>
-  <path d="M20 5.5 22.6 17.4 34.5 20 22.6 22.6 20 34.5 17.4 22.6 5.5 20 17.4 17.4Z" fill="#E8A33D"/>
-  <circle cx="20" cy="20" r="2.6" fill="#0C141C"/>
-</svg>"""
+FAVICON = (
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'
+    '<rect width="100" height="100" rx="22" fill="#0C141C"/>'
+    # Artwork centres on y=55, the box on y=50 — nudge up so it sits optically true.
+    f'<g transform="translate(50 50) scale(.86) translate(-50 -55)">'
+    f'<path fill-rule="evenodd" fill="#E8A33D" d="{DOORWAY_PATH}"/></g>'
+    "</svg>"
+)
 
 
 def sitemap():
