@@ -292,10 +292,16 @@ def shell(*, title, description, path, body, head_extra=""):
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(description)}">
 <meta property="og:url" content="{e(canonical)}">
+<meta property="og:image" content="{e(DOMAIN)}/assets/img/social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{e(SITE['org_name'])} — {e(SITE['tagline'])}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{e(DOMAIN)}/assets/img/social-card.png">
 
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/assets/img/favicon.svg">
+<!-- iOS ignores SVG for home-screen icons, so this one has to be a PNG. -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
