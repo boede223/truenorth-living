@@ -13,7 +13,12 @@
       "Bash(cp content/homes.json *)",
       "Bash(python3 -c ' *)",
       "Bash(gh auth *)",
-      "Bash(python3 -c \"import yaml; print\\('pyyaml available', yaml.__version__\\)\")"
+      "Bash(python3 -c \"import yaml; print\\('pyyaml available', yaml.__version__\\)\")",
+      "Bash(git config *)",
+      "Read(//Users/bo/.config/**)",
+      "Read(//Users/bo/**)",
+      "Bash(git add *)",
+      "Bash(git -c user.email=admin@thetruenorthliving.com -c user.name=TrueNorth commit -q -m ' *)"
     ]
   }
 }

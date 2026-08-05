@@ -76,11 +76,24 @@ def e(text):
 
 
 def tel(number):
-    """(214) 555-0134 -> +12145550134 for tel: links."""
+    """Build a dialable tel: value.
+
+    (214) 555-0134  -> +12145550134
+    1-800-662-4357  -> +18006624357
+    988             -> 988
+
+    Short codes like 988 are NOT real phone numbers and must be dialed
+    verbatim — prefixing a country code gives '+988', which fails to
+    connect. This is the crisis line, so it has to be right.
+    """
     digits = re.sub(r"\D", "", str(number or ""))
-    if len(digits) == 10:
-        digits = "1" + digits
-    return "+" + digits if digits else ""
+    if not digits:
+        return ""
+    if len(digits) <= 6:          # short code (988, 911, 211, …)
+        return digits
+    if len(digits) == 10:         # US number missing its country code
+        return "+1" + digits
+    return "+" + digits
 
 
 def paragraphs(text, cls=""):
