@@ -43,15 +43,15 @@
   "team_title": "Who you'll actually talk to",
   "team": [
     {
-      "name": "PLACEHOLDER — Name",
+      "name": "Boede Gibson",
       "role": "Founder & Director",
-      "photo": "",
+      "photo": "/assets/img/uploads/pasted-image-1786049437783.png",
       "bio": "One or two sentences. What they do here, and one true human detail. Credentials if relevant (LCDC, CPRS, peer specialist)."
     },
     {
-      "name": "PLACEHOLDER — Name",
-      "role": "House Manager",
-      "photo": "",
+      "name": "Rex Gibson",
+      "role": "Founder and Director",
+      "photo": "/assets/img/uploads/pasted-image-1786049698816.png",
       "bio": "One or two sentences."
     }
   ]
