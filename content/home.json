@@ -55,12 +55,12 @@
   "testimonials": [
     {
       "quote": "I'd been through four places that felt like storage units for people. This was the first one that felt like an address.",
-      "attribution": "PLACEHOLDER — Resident, [house name]",
-      "note": "PLACEHOLDER — replace with a real, consented quote."
+      "attribution": "— Resident",
+      "note": "— replace with a real, consented quote."
     },
     {
       "quote": "My son called me from the porch on a Tuesday just to talk. That hadn't happened in three years.",
-      "attribution": "PLACEHOLDER — Parent of a resident",
+      "attribution": "— Parent of a resident",
       "note": "PLACEHOLDER — replace with a real, consented quote."
     }
   ],
