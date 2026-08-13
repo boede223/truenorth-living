@@ -106,6 +106,15 @@ def paragraphs(text, cls=""):
     return "\n".join(f"<p{attr}>{e(c)}</p>" for c in chunks)
 
 
+def clip(text, limit):
+    """Shorten to a word boundary. Slicing mid-word looks like a bug."""
+    t = " ".join(str(text or "").split())
+    if len(t) <= limit:
+        return t
+    cut = t[:limit].rsplit(" ", 1)[0].rstrip(" ,;:—-")
+    return cut + "…"
+
+
 def is_placeholder(text):
     return "PLACEHOLDER" in str(text or "")
 
@@ -362,6 +371,7 @@ def shell(*, title, description, path, body, head_extra=""):
           <li><a href="/#cost">Cost &amp; payment</a></li>
           <li><a href="/#faq">FAQ</a></li>
           <li><a href="/apply/">Apply for a bed</a></li>
+          <li><a href="/brochure/">Printable info sheet</a></li>
         </ul>
       </div>
       <div>
@@ -961,6 +971,226 @@ def build_apply():
     )
 
 
+def brochure_shell(body):
+    """A bare document shell — no site nav, no crisis bar, no footer.
+
+    The brochure is a thing you print or attach to an email, so it carries its
+    own contact details and stands entirely on its own.
+    """
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{e(SITE['org_name'])} — Information Sheet</title>
+<meta name="description" content="Printable information sheet for {e(SITE['org_name'])}, sober living in North Texas.">
+<!-- Kept out of search so it never competes with the main site. -->
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="{e(DOMAIN)}/brochure/">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400..700&display=swap">
+<link rel="stylesheet" href="/assets/css/brochure.css">
+</head>
+<body>
+<div class="toolbar">
+  <b>Information sheet</b>
+  <span>Two pages · prints on US Letter</span>
+  <button class="primary" type="button" onclick="window.print()">Print or save as PDF</button>
+  <a href="/">Back to the website</a>
+</div>
+<main>
+{body}
+</main>
+</body>
+</html>
+"""
+
+
+def build_brochure():
+    """A two-page printable sheet, built from the same content as the site.
+
+    Because it reads content/*.json, it can never drift out of date: change a
+    rate or a phone number in the admin panel and the brochure changes too.
+    """
+    status, avail_text = availability()
+    live = published_homes()
+
+    brand = f"""
+    <div class="brandblock">
+      {LOGO}
+      <div>
+        <div class="name">True<i>North</i> Living</div>
+        <div class="sub">{e(SITE['tagline'])}</div>
+      </div>
+    </div>"""
+
+    contact = f"""
+    <div class="contact">
+      <span class="tel">{e(SITE['phone'])}</span>
+      <span>{e(SITE['email'])}</span><br>
+      <span>{e(DOMAIN.replace("https://", ""))}</span><br>
+      <span>{e(SITE['hours'])}</span>
+    </div>"""
+
+    words = HOME["hero"]["title"].rsplit(" ", 1)
+    lede_title = (f'{e(words[0])} <em>{e(words[1])}</em>'
+                  if len(words) == 2 else e(HOME["hero"]["title"]))
+
+    pillars = "".join(
+        f"""
+      <div class="pt">
+        <h3>{e(p['title'])}</h3>
+        <p>{e(p['body'])}</p>
+      </div>"""
+        for p in HOME.get("pillars", [])[:4]
+    )
+
+    steps = "".join(
+        f"""
+      <div class="step">
+        <div class="step-n">{i + 1:02d}</div>
+        <div>
+          <h3>{e(s['label'])}</h3>
+          <p>{e(s['detail'])}</p>
+        </div>
+      </div>"""
+        for i, s in enumerate(HOME.get("path", []))
+    )
+
+    if live:
+        rates = "".join(
+            f"""
+      <div class="rate-card">
+        <h3>{e(h['name'])}</h3>
+        <span class="n">${e(h.get('weekly_rate','—'))}<small>/week</small></span>
+        <p>{e(h.get('city',''))} · {e(h.get('gender',''))} · {e(h.get('beds_total','?'))} beds</p>
+      </div>"""
+            for h in live[:3]
+        )
+    else:
+        rates = f"""
+      <div class="rate-card" style="grid-column:1/-1">
+        <h3>Rates are being set now</h3>
+        <p style="margin-top:3pt">{e(COSTS.get('rates_empty',''))}</p>
+      </div>"""
+
+    included = "".join(f"<li>{e(i)}</li>" for i in COSTS.get("included", [])[:4])
+    excluded = "".join(f"<li>{e(i)}</li>" for i in COSTS.get("not_included", [])[:3])
+
+    standards = "".join(
+        f"""
+      <div{ph_class(s["body"], "pt")}>
+        <h3>{e(s['title'])}</h3>
+        <p>{e(clip(s['body'], 108))}</p>
+      </div>"""
+        for s in ABOUT.get("standards", [])[:3]
+    )
+
+    # Prefer finished answers, so the brochure is as complete as it can be —
+    # but keep any placeholder visible and flagged rather than hiding it.
+    faqs = FAQ.get("faqs", [])
+    ordered = ([f for f in faqs if not is_placeholder(f["a"])]
+               + [f for f in faqs if is_placeholder(f["a"])])
+    qa = "".join(
+        f"""
+      <div>
+        <p class="q">{e(f['q'])}</p>
+        <p{ph_class(f["a"], "a")}>{e(clip(f['a'], 140))}</p>
+      </div>"""
+        for f in ordered[:2]
+    )
+
+    cta = f"""
+    <div class="cta">
+      <div>
+        <h2>{e(HOMES.get('empty_cta','Get on the list')) if not live else 'There may be a bed tonight.'}</h2>
+        <p>{e(clip(HOMES.get('empty_body',''), 165)) if not live else 'Call and we will tell you exactly what is open right now — no sales pitch, no pressure.'}</p>
+      </div>
+      <div class="num">{e(SITE['phone'])}<small>{e(SITE['hours'])}</small></div>
+    </div>"""
+
+    body = f"""
+<section class="sheet">
+  <div class="masthead">
+    {brand}
+    {contact}
+  </div>
+
+  <span class="status"><i></i>{e(avail_text)}</span>
+
+  <div>
+    <h1 class="lede-title">{lede_title}</h1>
+    <p class="lede-body">{e(HOME['hero']['subtitle'])}</p>
+  </div>
+
+  <div class="sec">
+    <h2 class="eyebrow">How we run a house</h2>
+    <div class="four">{pillars}</div>
+  </div>
+
+  <div class="sec">
+    <h2 class="eyebrow">What the first ninety days look like</h2>
+    <div class="steps">{steps}</div>
+  </div>
+
+  {cta}
+  <div class="pagemark">{e(SITE['org_name'])} · page 1 of 2</div>
+</section>
+
+<section class="sheet">
+  <div class="masthead">
+    {brand}
+    <div class="contact">
+      <span class="tel">{e(SITE['phone'])}</span>
+      <span>{e(DOMAIN.replace("https://", ""))}</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2 class="eyebrow">Cost</h2>
+    <h2>{e(COSTS['hero_title'])}</h2>
+    <div class="three" style="margin-top:.14in">{rates}</div>
+  </div>
+
+  <div class="two">
+    <div class="sec">
+      <h2 class="eyebrow">In the rate</h2>
+      <ul class="list">{included}</ul>
+    </div>
+    <div class="sec">
+      <h2 class="eyebrow">Not included</h2>
+      <ul class="list list--no">{excluded}</ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <b>Does insurance cover this?</b> {e(clip(COSTS['insurance_body'], 175))}
+  </div>
+
+  <div class="sec">
+    <h2 class="eyebrow">Standards &amp; accountability</h2>
+    <div class="three">{standards}</div>
+  </div>
+
+  <div class="sec">
+    <h2 class="eyebrow">Common questions</h2>
+    <div class="qa">{qa}</div>
+  </div>
+
+  {cta}
+
+  <div class="crisisline">
+    <span><b>{e(SITE['crisis_label'])}</b> Call or text {e(SITE['crisis_line'])} · SAMHSA {e(SITE['samhsa_line'])}</span>
+    <span>{e(clip(SITE['footer_note'], 92))}</span>
+  </div>
+  <div class="pagemark">{e(SITE['org_name'])} · page 2 of 2</div>
+</section>
+"""
+    return brochure_shell(body)
+
+
 def build_404():
     body = f"""
 {page_hero("404", "This page went for a walk.", "The link's broken, but the phone still works. Try one of these instead.")}
@@ -1023,6 +1253,9 @@ PAGES = {
     # worth linking and tracking on its own, and a long form under a long page
     # is a bad combination.
     "apply/index.html": build_apply,
+    # Printable two-page information sheet. Built from the same JSON as the
+    # site, so it can't drift out of date.
+    "brochure/index.html": build_brochure,
     "404.html": build_404,
 }
 

@@ -1,0 +1,270 @@
+/* ==========================================================================
+   TrueNorth Living — brochure.css
+   A printable document, not a web page.
+
+   The website is deep midnight with amber. You do not print that — it eats
+   a cartridge per copy and looks muddy on office paper. So the brochure runs
+   the palette inverted: warm paper, ink text, amber used only as an accent.
+
+   Two US Letter sheets. On screen they look like sheets; on paper they are.
+   ========================================================================== */
+
+@page {
+  size: letter;
+  margin: 0.5in;
+}
+
+:root {
+  --ink:      #16202A;
+  --ink-soft: #4C5966;
+  --ink-mute: #7B8794;
+  --rule:     #DAD3C6;
+  --rule-lt:  #EBE6DC;
+  --paper:    #FFFFFF;
+  --paper-2:  #F7F4ED;
+  --amber:    #9C6413;   /* deeper than the website's — legible on white */
+  --amber-lt: #F3E7D2;
+  --pine:     #1E4038;
+
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #4A4E52;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 10.5pt;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -.015em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0; text-wrap: pretty; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+/* ---------- The sheet ---------------------------------------------------- */
+.sheet {
+  width: 8.5in;
+  min-height: 11in;
+  padding: 0.48in 0.55in;
+  margin: 0.35in auto;
+  background: var(--paper);
+  box-shadow: 0 6px 30px rgba(0,0,0,.35);
+  display: flex;
+  flex-direction: column;
+  gap: 0.17in;
+  position: relative;
+}
+
+/* ---------- Screen-only toolbar ------------------------------------------ */
+.toolbar {
+  position: sticky; top: 0; z-index: 10;
+  background: #23272B;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  padding: .7rem 1rem;
+  display: flex; align-items: center; justify-content: center;
+  gap: .9rem; flex-wrap: wrap;
+  font-size: 9.5pt; color: #C6CDD4;
+}
+.toolbar b { color: #fff; font-weight: 600; }
+.toolbar button, .toolbar a {
+  font: inherit; font-weight: 600;
+  padding: .5rem 1rem; border-radius: 7px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,.28);
+  background: transparent; color: #fff; text-decoration: none;
+}
+.toolbar button.primary { background: #E8A33D; border-color: #E8A33D; color: #1A1207; }
+.toolbar button:hover, .toolbar a:hover { border-color: #E8A33D; }
+
+/* ---------- Masthead ----------------------------------------------------- */
+.masthead {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 0.3in;
+  padding-bottom: 0.18in;
+  border-bottom: 2px solid var(--ink);
+}
+.brandblock { display: flex; align-items: center; gap: .16in; }
+.brandblock svg { height: 0.62in; width: auto; }
+.brandblock .name {
+  font-family: var(--display); font-size: 20pt; font-weight: 600; letter-spacing: -.02em;
+}
+.brandblock .name i { font-style: normal; color: var(--amber); }
+.brandblock .sub {
+  font-size: 7.5pt; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-mute); margin-top: 2pt;
+}
+.masthead .contact { text-align: right; font-size: 9pt; line-height: 1.55; }
+.masthead .contact .tel {
+  font-family: var(--display); font-size: 15pt; font-weight: 600; color: var(--ink);
+  display: block; letter-spacing: -.01em;
+}
+.masthead .contact span { color: var(--ink-soft); }
+
+/* ---------- Lede --------------------------------------------------------- */
+.lede-title { font-size: 27pt; line-height: 1.02; max-width: 15ch; }
+.lede-title em { font-style: italic; color: var(--amber); }
+.lede-body { font-size: 11.5pt; color: var(--ink-soft); max-width: 62ch; margin-top: .1in; }
+
+.status {
+  display: inline-flex; align-items: center; gap: .09in;
+  padding: .06in .16in;
+  border: 1px solid var(--amber);
+  background: var(--amber-lt);
+  border-radius: 99px;
+  font-size: 9pt; font-weight: 600; color: #6E4508;
+  align-self: flex-start;
+}
+.status i { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+
+/* ---------- Generic section ---------------------------------------------- */
+h2.eyebrow, .eyebrow {
+  font-size: 7.5pt;
+  font-family: var(--sans); font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--amber);
+  display: flex; align-items: center; gap: .1in;
+  margin-bottom: .09in;
+}
+.eyebrow::after {
+  content: ""; flex: 1; height: 1px; background: var(--rule);
+}
+.sec > h2:not(.eyebrow) { font-size: 14pt; margin-bottom: .06in; }
+.sec h3 { font-size: 10.5pt; }
+
+/* ---------- Grids -------------------------------------------------------- */
+.four { display: grid; grid-template-columns: repeat(4, 1fr); gap: .2in; }
+.three { display: grid; grid-template-columns: repeat(3, 1fr); gap: .2in; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: .3in; }
+
+.pt h3 { margin-bottom: 3pt; }
+.pt p { font-size: 9pt; color: var(--ink-soft); line-height: 1.45; }
+
+/* ---------- Numbered path ------------------------------------------------ */
+.steps { display: grid; gap: .11in; counter-reset: s; }
+.step {
+  display: grid; grid-template-columns: 0.3in 1fr; gap: .14in;
+  align-items: start;
+}
+.step-n {
+  font-family: var(--display); font-size: 11pt; font-weight: 700;
+  color: var(--amber); font-variant-numeric: tabular-nums;
+  border-top: 2px solid var(--amber); padding-top: 4pt;
+}
+.step h3 { font-size: 11pt; margin-bottom: 2pt; }
+.step p { font-size: 9pt; color: var(--ink-soft); line-height: 1.45; }
+
+/* ---------- Included / not included -------------------------------------- */
+.list li {
+  display: grid; grid-template-columns: 0.14in 1fr; gap: .08in;
+  align-items: start;
+  font-size: 9pt; padding: 2.5pt 0;
+  border-bottom: 1px solid var(--rule-lt);
+}
+.list li:last-child { border-bottom: 0; }
+.list li::before { content: "✓"; color: var(--amber); font-weight: 700; }
+.list--no li::before { content: "—"; color: var(--ink-mute); }
+
+/* ---------- Rates -------------------------------------------------------- */
+.rate-card {
+  border: 1px solid var(--rule);
+  border-radius: 6pt;
+  padding: .16in;
+  background: var(--paper-2);
+}
+.rate-card h3 { font-size: 11pt; }
+.rate-card .n {
+  font-family: var(--display); font-size: 20pt; font-weight: 600; color: var(--amber);
+  display: block; margin: 2pt 0;
+}
+.rate-card .n small { font-family: var(--sans); font-size: 8.5pt; color: var(--ink-mute); font-weight: 400; }
+.rate-card p { font-size: 8.5pt; color: var(--ink-soft); }
+
+/* ---------- Callout ------------------------------------------------------ */
+.callout {
+  border-left: 3px solid var(--amber);
+  background: var(--paper-2);
+  padding: .11in .15in;
+  font-size: 9pt;
+  color: var(--ink-soft);
+}
+.callout b { color: var(--ink); }
+
+/* ---------- Q&A ---------------------------------------------------------- */
+.qa { display: grid; gap: .1in; }
+.qa .q { font-family: var(--display); font-size: 10.5pt; font-weight: 600; margin-bottom: 2pt; }
+.qa .a { font-size: 9pt; color: var(--ink-soft); line-height: 1.45; }
+
+/* ---------- Footer / CTA ------------------------------------------------- */
+.cta {
+  margin-top: auto;
+  background: var(--pine);
+  color: #F2EFE7;
+  border-radius: 8pt;
+  padding: .18in .22in;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: .3in;
+}
+.cta h2 { color: #fff; font-size: 15pt; margin-bottom: 3pt; }
+.cta p { font-size: 9pt; color: #C3D0C9; max-width: 42ch; }
+.cta .num {
+  font-family: var(--display); font-size: 21pt; font-weight: 600;
+  color: #F5C877; white-space: nowrap; letter-spacing: -.01em;
+}
+.cta .num small { display: block; font-family: var(--sans); font-size: 8.5pt;
+  color: #C3D0C9; font-weight: 400; letter-spacing: .04em; }
+
+.crisisline {
+  border-top: 1px solid var(--rule);
+  padding-top: .12in;
+  font-size: 8.5pt; color: var(--ink-mute);
+  display: flex; justify-content: space-between; gap: .2in; flex-wrap: wrap;
+}
+.crisisline b { color: var(--ink); }
+
+.pagemark {
+  position: absolute; bottom: .28in; right: .6in;
+  font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* Placeholder flag, same convention as the website */
+.ph { outline: 1px dashed rgba(196,100,60,.6); outline-offset: 3px; }
+
+/* ---------- Print -------------------------------------------------------- */
+@media print {
+  body { background: #fff; }
+  .toolbar { display: none !important; }
+  .sheet {
+    width: auto; min-height: auto;
+    margin: 0; padding: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+  .sheet:last-of-type { break-after: auto; page-break-after: auto; }
+  .sec, .step, .rate-card, .qa > div, .cta { break-inside: avoid; page-break-inside: avoid; }
+  h1, h2, h3 { break-after: avoid; page-break-after: avoid; }
+  a { color: inherit; text-decoration: none; }
+  .pagemark { position: static; text-align: right; margin-top: .1in; }
+}
+
+/* ---------- Small screens ------------------------------------------------ */
+@media screen and (max-width: 9in) {
+  .sheet { width: auto; max-width: 100%; margin: .5rem; padding: 1.1rem; min-height: auto; }
+  .four, .three, .two { grid-template-columns: 1fr; gap: .9rem; }
+  .masthead { flex-direction: column; gap: .8rem; }
+  .masthead .contact { text-align: left; }
+  .cta { flex-direction: column; align-items: flex-start; gap: .8rem; }
+  .lede-title { font-size: 22pt; }
+}
