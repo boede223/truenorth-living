@@ -14,14 +14,16 @@
       "beds_total": 8,
       "beds_open": 0,
       "status": "waitlist",
-      "weekly_rate": "175",
       "photo": "",
       "highlights": [
         "Something about the location",
         "Something about the amenities",
         "Something about the routine"
       ],
-      "description": "PLACEHOLDER — Two or three sentences describing the house the way you'd describe it to a friend. What the building is like, how many people live there, and what one true thing makes it different. Flip 'Show on website' to Yes once this is real and the doors are open."
+      "description": "PLACEHOLDER — Two or three sentences describing the house the way you'd describe it to a friend. What the building is like, how many people live there, and what one true thing makes it different. Flip 'Show on website' to Yes once this is real and the doors are open.",
+      "rate": "175",
+      "rate_period": "weekly"
     }
-  ]
+  ],
+  "empty_short": "We're filling our first house in the order people reach out. Call and we'll put you on the list."
 }

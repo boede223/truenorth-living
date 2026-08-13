@@ -1,10 +1,10 @@
 {
   "meta_title": "Cost & Payment — TrueNorth Living Sober Living Homes",
-  "meta_description": "What sober living costs at TrueNorth Living in North Texas: Bi-monthly rates, what's included, what insurance does and doesn't cover, and financial assistance options.",
+  "meta_description": "What sober living costs at TrueNorth Living in North Texas: rates by house, what's included, what insurance does and doesn't cover, and financial assistance.",
   "hero_title": "What it costs, in plain numbers.",
   "hero_body": "Most people asking this question are doing math in a parking lot. So here it is up front, with nothing buried below the fold.",
   "rates_title": "Rates",
-  "rates_note": "Rates are per person, bi-monthly, and are set per house. See each house for its exact rate.",
+  "rates_note": "Rates are per person and set per house — some are charged weekly, some every two weeks, some monthly. Each house shows its own.",
   "rates_empty": "We'll post the exact rate here the moment our first house opens. Call us in the meantime and we'll tell you what we're planning — including what's included and what isn't.",
   "included_title": "What's included",
   "included": [
@@ -44,5 +44,6 @@
       "body": "Most residents are working within three weeks. We treat that as part of the program, not a side quest."
     }
   ],
-  "faq_teaser": "Still have questions about money, rules, or how admission works?"
+  "faq_teaser": "Still have questions about money, rules, or how admission works?",
+  "insurance_short": "Sober living is housing, not clinical treatment, so insurance usually doesn't pay for it. It can cover care you receive while living here."
 }

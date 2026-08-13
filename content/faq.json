@@ -6,43 +6,53 @@
   "faqs": [
     {
       "q": "How fast can I move in?",
-      "a": "Often within 48 hours of your application if a bed is open. If nothing is open at the house you want, we'll tell you where you sit on the waitlist and give you a real estimate — not a maybe."
+      "a": "Often within 48 hours of your application if a bed is open. If nothing is open at the house you want, we'll tell you where you sit on the waitlist and give you a real estimate — not a maybe.",
+      "short": "Often within 48 hours if a bed is open. If not, we'll tell you where you sit on the waitlist."
     },
     {
       "q": "Do I have to be detoxed first?",
-      "a": "Yes. Sober living is not detox and not a treatment facility. You need to be medically stable and past withdrawal before moving in. If you're not there yet, call us anyway and we'll help you find a detox or treatment program first."
+      "a": "Yes. Sober living is not detox and not a treatment facility. You need to be medically stable and past withdrawal before moving in. If you're not there yet, call us anyway and we'll help you find a detox or treatment program first.",
+      "short": "Yes. You need to be medically stable and past withdrawal. If you're not there yet, call and we'll help."
     },
     {
       "q": "How long do people stay?",
-      "a": "Most residents stay six to nine months. There's no maximum. The research is consistent that longer stays predict better outcomes, so we won't push you out on a schedule."
+      "a": "Most residents stay six to nine months. There's no maximum. The research is consistent that longer stays predict better outcomes, so we won't push you out on a schedule.",
+      "short": "Most stay six to nine months. There's no maximum, and we won't push you out on a schedule."
     },
     {
       "q": "What happens if someone relapses?",
-      "a": "TrueNorth Living is committed to maintaining a safe, substance-free environment for every resident. Any use of alcohol or illicit drugs will result in immediate removal from the home while the situation is evaluated. Re-entry may be considered on a case-by-case basis after an appropriate clinical assessment and completion of any recommended level of care. Our goal is to protect the recovery of the entire community while supporting each individual with compassion, accountability, and a clear path forward whenever possible."
+      "a": "TrueNorth Living is committed to maintaining a safe, substance-free environment for every resident. Any use of alcohol or illicit drugs will result in immediate removal from the home while the situation is evaluated. Re-entry may be considered on a case-by-case basis after an appropriate clinical assessment and completion of any recommended level of care. Our goal is to protect the recovery of the entire community while supporting each individual with compassion, accountability, and a clear path forward whenever possible.",
+      "short": "Any use means immediate removal while we evaluate. Re-entry is considered case by case after assessment."
     },
     {
       "q": "Can I keep my job?",
-      "a": "You're expected to. Work, school, or structured volunteering is part of the program. We schedule house obligations around normal working hours wherever we can."
+      "a": "You're expected to. Work, school, or structured volunteering is part of the program. We schedule house obligations around normal working hours wherever we can.",
+      "short": "You're expected to. Work, school or structured volunteering is part of the program."
     },
     {
       "q": "Can I have visitors?",
-      "a": "TrueNorth Living encourages healthy family and support relationships through approved visitation during designated hours. To maintain a safe and recovery-focused environment, all visitors must be approved by management, remain in common areas, and comply with house rules; overnight guests and anyone under the influence of drugs or alcohol are strictly prohibited."
+      "a": "TrueNorth Living encourages healthy family and support relationships through approved visitation during designated hours. To maintain a safe and recovery-focused environment, all visitors must be approved by management, remain in common areas, and comply with house rules; overnight guests and anyone under the influence of drugs or alcohol are strictly prohibited.",
+      "short": "Approved visitors, common areas, designated hours. No overnight guests, nobody under the influence."
     },
     {
       "q": "Do you take people on MAT (Suboxone, methadone, Vivitrol)?",
-      "a": "TrueNorth Living supports evidence-based recovery and accepts residents who are prescribed Medication-Assisted Treatment (MAT) on a case-by-case basis. All MAT medications must be legally prescribed, taken as directed, and managed in accordance with house policies; misuse, diversion, or unauthorized medications are strictly prohibited."
+      "a": "TrueNorth Living supports evidence-based recovery and accepts residents who are prescribed Medication-Assisted Treatment (MAT) on a case-by-case basis. All MAT medications must be legally prescribed, taken as directed, and managed in accordance with house policies; misuse, diversion, or unauthorized medications are strictly prohibited.",
+      "short": "Yes, case by case. Medication must be legally prescribed, taken as directed, and managed to house policy."
     },
     {
       "q": "Are you a men's or women's house?",
-      "a": "TrueNorth does not operate co-ed residences; men and women live in separate houses."
+      "a": "TrueNorth does not operate co-ed residences; men and women live in separate houses.",
+      "short": "Both, in separate houses. TrueNorth does not operate co-ed residences."
     },
     {
       "q": "Is my information private?",
-      "a": "Yes. We don't confirm or deny that anyone lives here to callers, including family, without that resident's written permission."
+      "a": "Yes. We don't confirm or deny that anyone lives here to callers, including family, without that resident's written permission.",
+      "short": "We don't confirm anyone lives here without their written permission — including to family."
     },
     {
       "q": "What if I have a court order or probation requirement?",
-      "a": "Bring the paperwork. We work with probation officers, drug courts, and parole regularly, and we can provide residency verification and compliance letters."
+      "a": "Bring the paperwork. We work with probation officers, drug courts, and parole regularly, and we can provide residency verification and compliance letters.",
+      "short": "Bring the paperwork. We work with probation, drug courts and parole, and can provide verification letters."
     }
   ]
 }

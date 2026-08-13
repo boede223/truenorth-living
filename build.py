@@ -115,6 +115,25 @@ def clip(text, limit):
     return cut + "…"
 
 
+# Anything the brochure had to cut gets recorded here and reported at the end
+# of the build, so a too-long field is a visible warning rather than a silent
+# "…" on a document you hand to someone.
+BROCHURE_OVERFLOW = []
+
+
+def fit(text, limit, label, short=None):
+    """Use the purpose-written short version if there is one.
+
+    Falls back to the full text when it already fits. Only truncates as a last
+    resort, and says so when it does.
+    """
+    t = " ".join(str(short or "").split()) or " ".join(str(text or "").split())
+    if len(t) <= limit:
+        return t
+    BROCHURE_OVERFLOW.append((label, len(t), limit))
+    return clip(t, limit)
+
+
 def is_placeholder(text):
     return "PLACEHOLDER" in str(text or "")
 
@@ -172,6 +191,25 @@ STATUS_LABEL = {
 # --------------------------------------------------------------------------
 # Availability
 # --------------------------------------------------------------------------
+
+# Each house sets its own billing period, so the rate has to carry its unit
+# with it everywhere it appears.
+RATE_PERIOD = {
+    "weekly":   ("week",    "/wk"),
+    "biweekly": ("2 weeks", "/2 wks"),
+    "monthly":  ("month",   "/mo"),
+}
+
+
+def rate_of(house, short=False):
+    """Render a house's rate with its period, or "" if no rate is set."""
+    amount = str(house.get("rate") or "").strip()
+    if not amount:
+        return ""
+    long_unit, short_unit = RATE_PERIOD.get(house.get("rate_period", "weekly"),
+                                            RATE_PERIOD["weekly"])
+    return f"${e(amount)}<small>{short_unit if short else '/' + long_unit}</small>"
+
 
 def published_homes():
     """Houses with 'Show on website' turned on.
@@ -460,8 +498,8 @@ def house_card(h, level=3):
                  f'<div class="house-photo-note">{ICON_HOUSE}<span>Add a photo</span></div>')
 
     tags = "".join(f'<span class="tag">{e(t)}</span>' for t in h.get("highlights", []))
-    rate = h.get("weekly_rate")
-    rate_html = f'<span class="house-rate">${e(rate)}<small>/wk</small></span>' if rate else ""
+    rate = rate_of(h, short=True)
+    rate_html = f'<span class="house-rate">{rate}</span>' if rate else ""
 
     return f"""
 <article class="house reveal" id="{slugify(h['name'])}">
@@ -560,7 +598,7 @@ def build_index():
       <div class="card reveal">
         <h3>{e(h['name'])}</h3>
         <p class="house-rate" style="font-size:var(--t-2xl);display:block;margin:.4rem 0">
-          ${e(h.get('weekly_rate','—'))}<small style="font-size:var(--t-sm)">/week</small>
+          {rate_of(h) or '—'}
         </p>
         <p>{e(h.get('city',''))} · {e(h.get('gender',''))} · {e(h.get('beds_total','?'))} beds</p>
       </div>"""
@@ -1064,7 +1102,7 @@ def build_brochure():
             f"""
       <div class="rate-card">
         <h3>{e(h['name'])}</h3>
-        <span class="n">${e(h.get('weekly_rate','—'))}<small>/week</small></span>
+        <span class="n">{rate_of(h) or '—'}</span>
         <p>{e(h.get('city',''))} · {e(h.get('gender',''))} · {e(h.get('beds_total','?'))} beds</p>
       </div>"""
             for h in live[:3]
@@ -1083,7 +1121,7 @@ def build_brochure():
         f"""
       <div{ph_class(s["body"], "pt")}>
         <h3>{e(s['title'])}</h3>
-        <p>{e(clip(s['body'], 108))}</p>
+        <p>{e(fit(s['body'], 108, 'About → Standards → ' + s['title']))}</p>
       </div>"""
         for s in ABOUT.get("standards", [])[:3]
     )
@@ -1097,7 +1135,7 @@ def build_brochure():
         f"""
       <div>
         <p class="q">{e(f['q'])}</p>
-        <p{ph_class(f["a"], "a")}>{e(clip(f['a'], 140))}</p>
+        <p{ph_class(f["a"], "a")}>{e(fit(f['a'], 140, 'FAQ → ' + f['q'], f.get('short')))}</p>
       </div>"""
         for f in ordered[:2]
     )
@@ -1106,7 +1144,7 @@ def build_brochure():
     <div class="cta">
       <div>
         <h2>{e(HOMES.get('empty_cta','Get on the list')) if not live else 'There may be a bed tonight.'}</h2>
-        <p>{e(clip(HOMES.get('empty_body',''), 165)) if not live else 'Call and we will tell you exactly what is open right now — no sales pitch, no pressure.'}</p>
+        <p>{e(fit(HOMES.get('empty_body',''), 165, 'Houses → pre-launch message', HOMES.get('empty_short'))) if not live else 'Call and we will tell you exactly what is open right now — no sales pitch, no pressure.'}</p>
       </div>
       <div class="num">{e(SITE['phone'])}<small>{e(SITE['hours'])}</small></div>
     </div>"""
@@ -1166,7 +1204,7 @@ def build_brochure():
   </div>
 
   <div class="callout">
-    <b>Does insurance cover this?</b> {e(clip(COSTS['insurance_body'], 175))}
+    <b>Does insurance cover this?</b> {e(fit(COSTS['insurance_body'], 175, 'Cost → insurance', COSTS.get('insurance_short')))}
   </div>
 
   <div class="sec">
@@ -1183,7 +1221,7 @@ def build_brochure():
 
   <div class="crisisline">
     <span><b>{e(SITE['crisis_label'])}</b> Call or text {e(SITE['crisis_line'])} · SAMHSA {e(SITE['samhsa_line'])}</span>
-    <span>{e(clip(SITE['footer_note'], 92))}</span>
+    <span>{e(fit(SITE['footer_note'], 92, 'Settings → footer note', SITE.get('legal_short')))}</span>
   </div>
   <div class="pagemark">{e(SITE['org_name'])} · page 2 of 2</div>
 </section>
@@ -1349,6 +1387,9 @@ def main(dev=False):
         for _ in re.finditer(r"PLACEHOLDER", p.read_text(encoding="utf-8"))
     )
     print(f"✓ Built {pages} pages into {OUT.relative_to(ROOT)}/")
+    for label, actual, limit in BROCHURE_OVERFLOW:
+        print(f"  ! brochure had to shorten “{label}” "
+              f"({actual} chars, {limit} fits) — trim it and the “…” goes away")
     if placeholders:
         print(f"  {placeholders} placeholder(s) still to replace — they're outlined in orange on the site.")
     return placeholders

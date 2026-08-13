@@ -82,7 +82,16 @@ collections:
                 default: open
               - { label: "Beds open right now", name: beds_open, widget: number, value_type: int, min: 0, default: 0 }
               - { label: "Total beds", name: beds_total, widget: number, value_type: int, min: 1, default: 8 }
-              - { label: "Weekly rate (dollars, no $)", name: weekly_rate, widget: string, required: false, hint: "e.g. 175" }
+              - { label: "Rate (dollars, no $ sign)", name: rate, widget: string, required: false, hint: "e.g. 175" }
+              - label: "Charged every"
+                name: rate_period
+                widget: select
+                hint: "Set per house — they don't all have to match."
+                options:
+                  - { label: "Week", value: weekly }
+                  - { label: "Two weeks", value: biweekly }
+                  - { label: "Month", value: monthly }
+                default: weekly
               - { label: "Photo", name: photo, widget: image, required: false, hint: "Landscape works best. Leave empty to show placeholder art." }
               - { label: "Description", name: description, widget: text, hint: "Two or three sentences. Write it like you'd describe it to a friend." }
               - label: "Highlights"
