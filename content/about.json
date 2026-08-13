@@ -1,10 +1,10 @@
 {
   "meta_title": "About TrueNorth Living — Recovery Housing in North Texas",
-  "meta_description": "Who we are, how our sober living homes are run, and what we believe about recovery housing in Dallas, Denton, and Arlington.",
-  "hero_title": "True north is a direction, not a destination.",
+  "meta_description": "Who we are, how our sober living homes are run, and what we believe about recovery housing in the greater DFW area",
+  "hero_title": "True North is a direction, not a destination.",
   "hero_body": "You don't arrive at it. You just keep checking whether you're still pointed the right way — and it helps to have people around who'll tell you when you're not.",
   "story_title": "Why we started",
-  "story_body": "PLACEHOLDER — This is where your story goes, and it will do more work than any other paragraph on this site. People choosing a sober living home are trying to answer one question: can I trust these people with someone I love? Tell them plainly. Who started TrueNorth, what you saw that made you do it, and what you refuse to do. Two or three short paragraphs. Write it the way you'd say it out loud.",
+  "story_body": "Recovery is about more than staying sober—it's about building a meaningful life. We founded TrueNorth Living to provide more than just a place to stay. We wanted to create a home where men can find structure, accountability, community, and the support needed to confidently move forward. Every decision we make is guided by the belief that everyone deserves a safe environment and the opportunity to build a strong foundation for long-term recovery.",
   "values_title": "What we hold to",
   "values": [
     {
@@ -43,16 +43,16 @@
   "team_title": "Who you'll actually talk to",
   "team": [
     {
-      "name": "PLACEHOLDER — Name",
-      "role": "Founder & Director",
-      "photo": "",
-      "bio": "One or two sentences. What they do here, and one true human detail. Credentials if relevant (LCDC, CPRS, peer specialist)."
+      "name": "Boede Gibson",
+      "role": "Co-Founder & Owner",
+      "photo": "/assets/img/uploads/pasted-image-1786049437783.png",
+      "bio": "After witnessing the impact addiction has on families and close friends, Boede co-founded TrueNorth Living to create a place where individuals can rediscover purpose, accountability, and community. His vision is to build a lasting recovery community where residents are proud to say they were part of TrueNorth Living and continue to thrive long after leaving its doors."
     },
     {
-      "name": "PLACEHOLDER — Name",
-      "role": "House Manager",
-      "photo": "",
-      "bio": "One or two sentences."
+      "name": "Rex Gibson",
+      "role": "Co-Founder & Owner",
+      "photo": "/assets/img/uploads/pasted-image-1786049698816.png",
+      "bio": "Dr. Rex has spent his 30-year career caring for children and serving families throughout his community. Inspired by both his personal experiences and a lifelong commitment to helping others, he co-founded TrueNorth Living to provide a structured, supportive environment where individuals can build stability, independence, and a foundation for lasting recovery."
     }
   ]
 }
