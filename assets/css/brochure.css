@@ -64,7 +64,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   box-shadow: 0 6px 30px rgba(0,0,0,.35);
   display: flex;
   flex-direction: column;
-  gap: 0.17in;
+  gap: 0.145in;
   position: relative;
 }
 
@@ -143,7 +143,7 @@ h2.eyebrow, .eyebrow {
 .sec h3 { font-size: 10.5pt; }
 
 /* ---------- Grids -------------------------------------------------------- */
-.four { display: grid; grid-template-columns: repeat(4, 1fr); gap: .2in; }
+.four { display: grid; grid-template-columns: repeat(4, 1fr); gap: .16in; }
 .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: .2in; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: .3in; }
 

@@ -181,9 +181,17 @@ collections:
             name: standards
             widget: list
             summary: "{{fields.title}}"
+            hint: >-
+              Only claim what is true today. If you are working toward a
+              certification rather than holding one, say so in these words.
             fields:
               - { label: Title, name: title, widget: string }
               - { label: Body, name: body, widget: text }
+              - label: "Short version (for the printed sheet)"
+                name: short
+                widget: string
+                required: false
+                hint: "Under about 100 characters. Leave empty to use the body text.
           - { label: "Team heading", name: team_title, widget: string }
           - label: Team
             name: team
@@ -249,6 +257,11 @@ collections:
             fields:
               - { label: Question, name: q, widget: string }
               - { label: Answer, name: a, widget: text, hint: "Leave a blank line between paragraphs." }
+              - label: "Short answer (for the printed sheet)"
+                name: short
+                widget: string
+                required: false
+                hint: "One sentence, under about 140 characters. Leave empty to use the full answer.
 
       - name: apply
         label: Application page

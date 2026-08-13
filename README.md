@@ -223,12 +223,12 @@ Highest impact first:
 - [ ] **House photos** — the biggest single trust signal on the site. Real
       photos of real porches beat any stock image. Until you upload them,
       cards show deliberate placeholder art rather than looking broken.
-- [ ] **Certification, if you ever get it** — nothing on the site claims any
-      today, which is correct while you don't hold one. If you later certify
-      with TROHN (the Texas affiliate of NARR, and the recognised certifying
-      body here), add it under About → Standards. It's a genuine advantage
-      with referral sources, and it's also required if you ever want state
-      funding. Never list it before it's granted.
+- [ ] **TROHN certification** — the site and the brochure both say you're
+      *working toward* it and explicitly say you're not certified yet. That
+      wording is only true while you're genuinely pursuing it, so start the
+      application if you haven't. The day it's granted, change that entry
+      under About → Standards to say so — it's a real advantage with referral
+      sources, and it's required if you ever want state funding.
 - [ ] **Testimonials** — replace with real, consented quotes, or delete the
       section. Attribute by role, not full name, unless you have written
       permission.

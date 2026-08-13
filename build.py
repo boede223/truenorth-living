@@ -1121,9 +1121,9 @@ def build_brochure():
         f"""
       <div{ph_class(s["body"], "pt")}>
         <h3>{e(s['title'])}</h3>
-        <p>{e(fit(s['body'], 108, 'About → Standards → ' + s['title']))}</p>
+        <p>{e(fit(s['body'], 108, 'About → Standards → ' + s['title'], s.get('short')))}</p>
       </div>"""
-        for s in ABOUT.get("standards", [])[:3]
+        for s in ABOUT.get("standards", [])[:4]
     )
 
     # Prefer finished answers, so the brochure is as complete as it can be —
@@ -1137,7 +1137,7 @@ def build_brochure():
         <p class="q">{e(f['q'])}</p>
         <p{ph_class(f["a"], "a")}>{e(fit(f['a'], 140, 'FAQ → ' + f['q'], f.get('short')))}</p>
       </div>"""
-        for f in ordered[:2]
+        for f in ordered[:1]
     )
 
     cta = f"""
@@ -1209,7 +1209,7 @@ def build_brochure():
 
   <div class="sec">
     <h2 class="eyebrow">Standards &amp; accountability</h2>
-    <div class="three">{standards}</div>
+    <div class="four">{standards}</div>
   </div>
 
   <div class="sec">
