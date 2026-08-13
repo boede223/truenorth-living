@@ -5,8 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>TrueNorth Living — Site Editor</title>
+  <style>
+    /* Banner shown only when this editor is running on your own Mac, so a
+       local session can never be mistaken for the live one. */
+    #where {
+      position: fixed; inset: 0 0 auto 0; z-index: 99999;
+      font: 600 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      padding: 10px 16px; text-align: center;
+      display: none;
+    }
+    #where.local { display: block; background: #B4522E; color: #fff; }
+    #where.live  { display: block; background: #1E4038; color: #EAF2ED; }
+    #where span { opacity: .82; font-weight: 400; }
+    body.has-banner { padding-top: 40px; }
+  </style>
 </head>
 <body>
+  <div id="where"></div>
+  <script>
+    (function () {
+      var host = location.hostname;
+      var isLocal = host === "localhost" || host === "127.0.0.1" || host.endsWith(".local");
+      var el = document.getElementById("where");
+      if (isLocal) {
+        el.className = "local";
+        el.innerHTML = 'EDITING ON THIS MAC ONLY — <span>saves here do not reach ' +
+                       'thetruenorthliving.com until you push in GitHub Desktop</span>';
+      } else {
+        el.className = "live";
+        el.innerHTML = 'EDITING THE LIVE SITE — <span>saves here publish to ' +
+                       'thetruenorthliving.com in about a minute</span>';
+      }
+      document.body.classList.add("has-banner");
+    })();
+  </script>
   <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
 </body>
 </html>
