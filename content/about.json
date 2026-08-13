@@ -28,16 +28,16 @@
   "standards_body": "Texas does not license sober living homes at the state level, which means the burden of proving quality falls on operators. We think that's worth taking seriously rather than hiding behind.",
   "standards": [
     {
-      "title": "NARR / TROHN alignment",
-      "body": "PLACEHOLDER — The Texas Recovery Oriented Housing Network (TROHN) is the state affiliate of the National Alliance for Recovery Residences and the recognized certifying body in Texas. State whether you are certified, in process, or aligned with the standards. Do not claim certification you do not hold."
-    },
-    {
       "title": "Fair housing",
       "body": "People in recovery are protected under the Fair Housing Act and the Americans with Disabilities Act. We follow those protections in every admission decision."
     },
     {
       "title": "Clear house agreement",
       "body": "Every resident signs a written agreement covering rate, rules, testing, guests, and the grievance process. You get a copy before you move in, not after."
+    },
+    {
+      "title": "Small enough to know everyone",
+      "body": "Every resident is known by name to the people running the house. Problems get noticed the day they start, not at the point of exit."
     }
   ],
   "team_title": "Who you'll actually talk to",
