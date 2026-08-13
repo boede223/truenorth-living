@@ -278,8 +278,35 @@ staring meaningfully into the middle distance.
 - Works with JavaScript disabled: every page reads, navigates, and the form
   still submits
 
-## Known trade-off
+## How the site is laid out
 
-Adding a page means editing `build.py`, not just the admin panel. That's the
-cost of having no framework — worth it at this size, and worth revisiting if
-you ever get past a dozen pages or start a blog.
+It's a **one-page site**. Everything lives on `/` as one scroll, with the nav
+jumping between sections:
+
+```
+/            hero → the path north → how we run a house →
+             #houses → #cost → #about → testimonials → #faq
+/apply/      the application form (its own page)
+/404.html    when a link is wrong
+```
+
+The application form keeps its own page on purpose: it's the thing you want
+people to reach, worth linking directly in an email or an ad, and a long form
+buried under a long page is a bad combination.
+
+The site used to be five separate pages. Those URLs (`/homes/`, `/costs/`,
+`/about/`, `/faq/`) now redirect to the matching section, so any link already
+out in the world still works.
+
+## Known trade-offs
+
+**One page means less search surface.** Five separate pages could each rank for
+different searches — "sober living cost dallas" had its own page to win with.
+Now the homepage has to rank for everything. For a business your size the
+homepage does most of the work anyway, but if you ever find you're not showing
+up for cost or FAQ searches specifically, splitting those back out is the fix.
+Everything needed to do that is still in the git history.
+
+**Adding a page means editing `build.py`**, not just the admin panel. That's
+the cost of having no framework — worth it at this size, and worth revisiting
+if you ever start a blog.

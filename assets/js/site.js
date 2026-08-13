@@ -84,6 +84,13 @@
     }, { rootMargin: "0px 0px -12% 0px", threshold: 0.1 });
 
     items.forEach(function (el) { io.observe(el); });
+
+    // Safety net. Reveal elements start at opacity 0, so if the observer never
+    // delivers — a backgrounded tab, an odd browser — the page would be blank.
+    // After 3 seconds, show anything still hidden regardless.
+    setTimeout(function () {
+      items.forEach(function (el) { el.classList.add("is-in"); });
+    }, 3000);
   }
 
   /* ---- The Path North --------------------------------------------------- *
@@ -195,16 +202,63 @@
     if (!here.endsWith("/")) here += "/";
     document.querySelectorAll(".nav a, .footer-grid a").forEach(function (a) {
       var href = a.getAttribute("href") || "";
-      if (!href.startsWith("/")) return;
+      if (!href.startsWith("/") || href.indexOf("#") !== -1) return;
       var target = href.endsWith("/") ? href : href + "/";
       if (target === here) a.setAttribute("aria-current", "page");
     });
+  }
+
+  /* ---- Highlight the section you're currently reading ------------------- *
+   * On a one-page site the nav is the only sense of place a visitor gets,
+   * so it has to track the scroll rather than sit inert.
+   * ---------------------------------------------------------------------- */
+  function initScrollSpy() {
+    var entries = [];
+    document.querySelectorAll('.nav a[href*="#"]').forEach(function (a) {
+      var id = a.href.split("#")[1];
+      var section = id && document.getElementById(id);
+      if (section) entries.push({ link: a, section: section });
+    });
+    if (!entries.length) return;
+
+    // Whichever section covers the read line — a third of the way down the
+    // viewport — is the one you're looking at. Falls back to the last section
+    // above the line so the nav is never blank mid-scroll.
+    var update = function () {
+      var line = window.innerHeight / 3;
+      var current = null;
+      entries.forEach(function (entry) {
+        var r = entry.section.getBoundingClientRect();
+        if (r.top <= line && r.bottom > line) current = entry;
+        else if (!current && r.bottom <= line) current = entry;
+      });
+      entries.forEach(function (entry) {
+        if (entry === current) entry.link.setAttribute("aria-current", "true");
+        else entry.link.removeAttribute("aria-current");
+      });
+    };
+
+    // Time-throttled rather than rAF-throttled: four getBoundingClientRect
+    // calls are cheap, and this keeps working in a backgrounded tab where
+    // requestAnimationFrame is suspended.
+    var last = 0;
+    var onScroll = function () {
+      var now = Date.now();
+      if (now - last < 100) return;
+      last = now;
+      update();
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
   }
 
   /* ---- Boot ------------------------------------------------------------- */
   var boot = function () {
     initHeader();
     initCurrentNav();
+    initScrollSpy();
     initReveal();
     initPath();
     initForm();

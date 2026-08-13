@@ -59,11 +59,14 @@ def reload_content():
 
 reload_content()
 
+# The site is one scrolling page, so the nav points at sections rather than
+# separate documents. The old page URLs still resolve — see the redirects in
+# main() — so any link already out in the world lands in the right place.
 NAV = [
-    ("/homes/", "Houses"),
-    ("/about/", "About"),
-    ("/costs/", "Cost"),
-    ("/faq/", "FAQ"),
+    ("/#houses", "Houses"),
+    ("/#cost", "Cost"),
+    ("/#about", "About"),
+    ("/#faq", "FAQ"),
 ]
 
 # --------------------------------------------------------------------------
@@ -270,7 +273,7 @@ def shell(*, title, description, path, body, head_extra=""):
         footer_houses = f"""      <div>
         <h2>Houses</h2>
         <ul>{"".join(
-            f'<li><a href="/homes/#{slugify(h["name"])}">{e(h["name"])}</a></li>'
+            f'<li><a href="/#{slugify(h["name"])}">{e(h["name"])}</a></li>'
             for h in live
         )}</ul>
       </div>"""
@@ -354,10 +357,10 @@ def shell(*, title, description, path, body, head_extra=""):
       <div>
         <h2>Site</h2>
         <ul>
-          <li><a href="/homes/">Our houses</a></li>
-          <li><a href="/about/">About us</a></li>
-          <li><a href="/costs/">Cost &amp; payment</a></li>
-          <li><a href="/faq/">FAQ</a></li>
+          <li><a href="/#houses">Our houses</a></li>
+          <li><a href="/#about">About us</a></li>
+          <li><a href="/#cost">Cost &amp; payment</a></li>
+          <li><a href="/#faq">FAQ</a></li>
           <li><a href="/apply/">Apply for a bed</a></li>
         </ul>
       </div>
@@ -499,8 +502,14 @@ def houses_block(level=3, limit=None):
 # --------------------------------------------------------------------------
 
 def build_index():
+    """The whole site as one scrolling page.
+
+    Sections carry ids so the nav, the footer and the old multi-page URLs can
+    all deep-link into them: #houses, #cost, #about, #faq.
+    """
     hero = HOME["hero"]
     status, avail_text = availability()
+    has_homes = bool(published_homes())
 
     if hero.get("video"):
         media = (f'<video autoplay muted loop playsinline '
@@ -509,48 +518,110 @@ def build_index():
     elif hero.get("poster"):
         media = f'<img src="{e(hero["poster"])}" alt="" fetchpriority="high" decoding="async">'
     else:
-        # No media uploaded yet — the CSS gradient scrim carries the hero alone.
+        # No media uploaded yet — the CSS night sky carries the hero alone.
         media = ""
+
+    # Split the headline so the last word can carry the italic accent.
+    words = hero["title"].rsplit(" ", 1)
+    heading = f'{e(words[0])} <em>{e(words[1])}</em>' if len(words) == 2 else e(hero["title"])
 
     steps = "\n".join(
         f"""
-    <div class="path-step">
-      <span class="path-num">{i + 1:02d}</span>
-      <h3>{e(s['label'])}</h3>
-      <p>{e(s['detail'])}</p>
-    </div>"""
+      <div class="path-step">
+        <span class="path-num">{i + 1:02d}</span>
+        <h3>{e(s['label'])}</h3>
+        <p>{e(s['detail'])}</p>
+      </div>"""
         for i, s in enumerate(HOME.get("path", []))
     )
 
     pillars = "\n".join(
         f"""
-    <div class="pillar reveal">
-      {PILLAR_ICONS[i % len(PILLAR_ICONS)]}
-      <h3>{e(p['title'])}</h3>
-      <p>{e(p['body'])}</p>
-    </div>"""
+      <div class="pillar reveal">
+        {PILLAR_ICONS[i % len(PILLAR_ICONS)]}
+        <h3>{e(p['title'])}</h3>
+        <p>{e(p['body'])}</p>
+      </div>"""
         for i, p in enumerate(HOME.get("pillars", []))
+    )
+
+    rates = "\n".join(
+        f"""
+      <div class="card reveal">
+        <h3>{e(h['name'])}</h3>
+        <p class="house-rate" style="font-size:var(--t-2xl);display:block;margin:.4rem 0">
+          ${e(h.get('weekly_rate','—'))}<small style="font-size:var(--t-sm)">/week</small>
+        </p>
+        <p>{e(h.get('city',''))} · {e(h.get('gender',''))} · {e(h.get('beds_total','?'))} beds</p>
+      </div>"""
+        for h in published_homes()
+    ) or f"""
+      <div class="card reveal">
+        <h3>Rates are being set now</h3>
+        <p>{e(COSTS.get('rates_empty',''))}</p>
+      </div>"""
+
+    included = "\n".join(f"<li>{e(i)}</li>" for i in COSTS.get("included", []))
+    not_included = "\n".join(f"<li>{e(i)}</li>" for i in COSTS.get("not_included", []))
+
+    assistance = "\n".join(
+        f"""
+      <div{ph_class(a["body"], "card reveal")}>
+        <h3>{e(a['title'])}</h3>
+        <p>{e(a['body'])}</p>
+      </div>"""
+        for a in COSTS.get("assistance", [])
+    )
+
+    values = "\n".join(
+        f"""
+      <div class="card reveal">
+        <h3>{e(v['title'])}</h3>
+        <p>{e(v['body'])}</p>
+      </div>"""
+        for v in ABOUT.get("values", [])
+    )
+
+    standards = "\n".join(
+        f"""
+      <div{ph_class(s["body"], "card reveal")}>
+        <h3>{e(s['title'])}</h3>
+        <p>{e(s['body'])}</p>
+      </div>"""
+        for s in ABOUT.get("standards", [])
+    )
+
+    people = "\n".join(
+        f"""
+      <div class="person reveal">
+        <div class="person-photo">{f'<img src="{e(p["photo"])}" alt="{e(p["name"])}" loading="lazy">' if p.get("photo") else ICON_HOUSE}</div>
+        <h3{ph_class(p['name'])}>{e(p['name'])}</h3>
+        <p class="role">{e(p['role'])}</p>
+        <p>{e(p['bio'])}</p>
+      </div>"""
+        for p in ABOUT.get("team", [])
     )
 
     quotes = "\n".join(
         f"""
-    <figure{ph_class(q.get("note",""), "quote reveal")}>
-      <blockquote>{e(q['quote'])}</blockquote>
-      <cite>{e(q['attribution'])}</cite>
-    </figure>"""
+      <figure{ph_class(q.get("note",""), "quote reveal")}>
+        <blockquote>{e(q['quote'])}</blockquote>
+        <cite>{e(q['attribution'])}</cite>
+      </figure>"""
         for q in HOME.get("testimonials", [])
     )
 
-    featured = houses_block(level=3, limit=3)
-    has_homes = bool(published_homes())
-
-    # Split the headline so the last word can carry the italic accent.
-    title = hero["title"]
-    words = title.rsplit(" ", 1)
-    heading = f"{e(words[0])} <em>{e(words[1])}</em>" if len(words) == 2 else e(title)
+    faqs = "\n".join(
+        f"""
+      <details class="faq-item">
+        <summary>{e(f['q'])}</summary>
+        <div{ph_class(f["a"], "faq-answer")}>{paragraphs(f['a'])}</div>
+      </details>"""
+        for f in FAQ.get("faqs", [])
+    )
 
     body = f"""
-<section class="hero">
+<section class="hero" id="top">
   <div class="hero-media">{media}</div>
   <div class="wrap hero-inner">
     <p class="eyebrow">{e(hero['eyebrow'])}</p>
@@ -558,10 +629,10 @@ def build_index():
     <p class="lede">{e(hero['subtitle'])}</p>
     <div class="btn-row">
       <a class="btn btn--lg" href="{e(hero['primary_cta_href'])}">{e(hero['primary_cta'])}</a>
-      <a class="btn btn--lg btn--ghost" href="{e(hero['secondary_cta_href'])}">{e(hero['secondary_cta'])}</a>
+      <a class="btn btn--lg btn--ghost" href="#houses">{e(hero['secondary_cta'])}</a>
     </div>
     <p style="margin-top:var(--sp-5)">
-      <a class="avail-pill" href="/homes/">
+      <a class="avail-pill" href="#houses">
         <i class="dot dot--{status}"></i>{e(avail_text)}
       </a>
     </p>
@@ -569,7 +640,7 @@ def build_index():
   <div class="scroll-hint"><span>Scroll</span><i></i></div>
 </section>
 
-<section class="section path">
+<section class="section path" id="path">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="eyebrow">The path north</p>
@@ -584,7 +655,7 @@ def build_index():
   </div>
 </section>
 
-<section class="section section--bone">
+<section class="section section--bone" id="approach">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="eyebrow">Our approach</p>
@@ -596,21 +667,94 @@ def build_index():
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="houses">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="eyebrow">{"Available now" if has_homes else "Opening soon"}</p>
       <h2>{e(HOMES['intro_title'])}</h2>
       <p class="lede">{e(HOMES['intro_body'])}</p>
     </div>
-    {featured}
-    {'''<p style="margin-top:var(--sp-5)" class="reveal">
-      <a class="arrow-link" href="/homes/">See all houses and availability <span>&rarr;</span></a>
-    </p>''' if has_homes else ""}
+    {houses_block(level=3)}
   </div>
 </section>
 
-<section class="section">
+<section class="section section--bone" id="cost">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Cost &amp; payment</p>
+      <h2>{e(COSTS['hero_title'])}</h2>
+      <p class="lede">{e(COSTS['hero_body'])}</p>
+    </div>
+    <div class="cards">
+      {rates}
+    </div>
+    <div class="split" style="margin-top:var(--sp-6)">
+      <div class="reveal">
+        <p class="eyebrow">{e(COSTS['included_title'])}</p>
+        <h3 style="margin-block:var(--sp-3)">In the rate</h3>
+        <ul class="checklist">{included}</ul>
+      </div>
+      <div class="reveal">
+        <p class="eyebrow">{e(COSTS['not_included_title'])}</p>
+        <h3 style="margin-block:var(--sp-3)">On you</h3>
+        <ul class="checklist checklist--minus">{not_included}</ul>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top:var(--sp-6);max-width:62ch">
+      <p class="eyebrow">{e(COSTS['insurance_title'])}</p>
+      <h3 style="margin-block:var(--sp-3)">Does insurance cover this?</h3>
+      <p>{e(COSTS['insurance_body'])}</p>
+    </div>
+    <div style="margin-top:var(--sp-6)">
+      <div class="section-head reveal">
+        <p class="eyebrow">Financial help</p>
+        <h3>{e(COSTS['assistance_title'])}</h3>
+        <p class="lede">{e(COSTS['assistance_body'])}</p>
+      </div>
+      <div class="cards">
+        {assistance}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">About TrueNorth</p>
+      <h2>{e(ABOUT['hero_title'])}</h2>
+      <p class="lede"{ph_class(ABOUT['hero_body'])}>{e(ABOUT['hero_body'])}</p>
+    </div>
+    <div class="wrap-narrow prose reveal" style="margin-inline:0;width:auto;max-width:68ch">
+      <h3>{e(ABOUT['story_title'])}</h3>
+      <div{ph_class(ABOUT['story_body'])}>{paragraphs(ABOUT['story_body'])}</div>
+    </div>
+    <div style="margin-top:var(--sp-6)">
+      <div class="section-head reveal">
+        <p class="eyebrow">Values</p>
+        <h3>{e(ABOUT['values_title'])}</h3>
+      </div>
+      <div class="cards">{values}</div>
+    </div>
+    <div style="margin-top:var(--sp-6)">
+      <div class="section-head reveal">
+        <p class="eyebrow">Accountability</p>
+        <h3>{e(ABOUT['standards_title'])}</h3>
+        <p class="lede">{e(ABOUT['standards_body'])}</p>
+      </div>
+      <div class="cards">{standards}</div>
+    </div>
+    <div style="margin-top:var(--sp-6)">
+      <div class="section-head reveal">
+        <p class="eyebrow">The team</p>
+        <h3>{e(ABOUT['team_title'])}</h3>
+      </div>
+      <div class="people">{people}</div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--bone" id="proof">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="eyebrow">{e(HOME['proof_title'])}</p>
@@ -622,265 +766,25 @@ def build_index():
   </div>
 </section>
 
+<section class="section" id="faq">
+  <div class="wrap-narrow">
+    <div class="section-head reveal">
+      <p class="eyebrow">FAQ</p>
+      <h2>{e(FAQ['hero_title'])}</h2>
+      <p class="lede">{e(FAQ['hero_body'])}</p>
+    </div>
+    <div class="faq-list">
+      {faqs}
+    </div>
+  </div>
+</section>
+
 {cta_band(HOME['cta_title'], HOME['cta_body'], HOME['cta_button'])}
 """
     return shell(
         title=HOME["meta_title"],
         description=HOME["meta_description"],
         path="/",
-        body=body,
-    )
-
-
-def build_homes():
-    has_homes = bool(published_homes())
-
-    cta = (
-        ("Not sure which house fits?",
-         "Call and describe your situation. We'll tell you honestly which house is "
-         "the right one — or whether we're the wrong fit entirely.",
-         "Talk to us")
-        if has_homes else
-        ("Want to know the moment we open?",
-         "Get on the list and we'll call you before the beds are advertised anywhere else.",
-         "Get on the list")
-    )
-
-    body = f"""
-{page_hero("Dallas · Denton · Arlington", HOMES["intro_title"], HOMES["intro_body"])}
-
-<section class="section">
-  <div class="wrap">
-    {houses_block(level=2)}
-  </div>
-</section>
-
-{cta_band(*cta)}
-"""
-    if has_homes:
-        title = "Our Houses & Bed Availability — TrueNorth Living, North Texas"
-        desc = ("Current bed availability at TrueNorth Living sober living homes in "
-                "North Texas. Weekly rates, house details, and how to apply.")
-    else:
-        title = "Our Houses — TrueNorth Living Sober Living, North Texas"
-        desc = ("TrueNorth Living is opening its first sober living house in North "
-                "Texas. Join the list to hear the moment beds are available.")
-
-    return shell(title=title, description=desc, path="/homes/", body=body)
-
-
-def build_about():
-    values = "\n".join(
-        f"""
-    <div class="card reveal">
-      <h3>{e(v['title'])}</h3>
-      <p>{e(v['body'])}</p>
-    </div>"""
-        for v in ABOUT.get("values", [])
-    )
-
-    standards = "\n".join(
-        f"""
-    <div{ph_class(s["body"], "card reveal")}>
-      <h3>{e(s['title'])}</h3>
-      <p>{e(s['body'])}</p>
-    </div>"""
-        for s in ABOUT.get("standards", [])
-    )
-
-    people = "\n".join(
-        f"""
-    <div class="person reveal">
-      <div class="person-photo">{f'<img src="{e(p["photo"])}" alt="{e(p["name"])}" loading="lazy">' if p.get("photo") else ICON_HOUSE}</div>
-      <h3{ph_class(p['name'])}>{e(p['name'])}</h3>
-      <p class="role">{e(p['role'])}</p>
-      <p>{e(p['bio'])}</p>
-    </div>"""
-        for p in ABOUT.get("team", [])
-    )
-
-    body = f"""
-{page_hero("About TrueNorth", ABOUT["hero_title"], ABOUT["hero_body"])}
-
-<section class="section">
-  <div class="wrap-narrow prose reveal">
-    <p class="eyebrow">{e(ABOUT['story_title'])}</p>
-    <h2>Why we started</h2>
-    <div{ph_class(ABOUT['story_body'])}>{paragraphs(ABOUT['story_body'], 'lede')}</div>
-  </div>
-</section>
-
-<section class="section section--bone">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">Values</p>
-      <h2>{e(ABOUT['values_title'])}</h2>
-    </div>
-    <div class="cards">
-      {values}
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">Accountability</p>
-      <h2>{e(ABOUT['standards_title'])}</h2>
-      <p class="lede">{e(ABOUT['standards_body'])}</p>
-    </div>
-    <div class="cards">
-      {standards}
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">The team</p>
-      <h2>{e(ABOUT['team_title'])}</h2>
-    </div>
-    <div class="people">
-      {people}
-    </div>
-  </div>
-</section>
-
-{cta_band("Come see a house.",
-          "Tours are welcome, and we'd rather you visit than take our word for anything on this page.",
-          "Schedule a visit")}
-"""
-    return shell(
-        title=ABOUT["meta_title"],
-        description=ABOUT["meta_description"],
-        path="/about/",
-        body=body,
-    )
-
-
-def build_costs():
-    rates = "\n".join(
-        f"""
-    <div class="card reveal">
-      <h3>{e(h['name'])}</h3>
-      <p class="house-rate" style="font-size:var(--t-2xl);display:block;margin:.4rem 0">
-        ${e(h.get('weekly_rate','—'))}<small style="font-size:var(--t-sm)">/week</small>
-      </p>
-      <p>{e(h.get('city',''))} · {e(h.get('gender',''))} · {e(h.get('beds_total','?'))} beds</p>
-    </div>"""
-        for h in published_homes()
-    ) or f"""
-    <div class="card reveal">
-      <h3>Rates are being set now</h3>
-      <p>{e(COSTS.get('rates_empty', 'We will post the exact weekly rate here the moment our first house opens. Call us and we will tell you what we are planning.'))}</p>
-    </div>"""
-
-    included = "\n".join(f"<li>{e(i)}</li>" for i in COSTS.get("included", []))
-    not_included = "\n".join(f"<li>{e(i)}</li>" for i in COSTS.get("not_included", []))
-
-    assistance = "\n".join(
-        f"""
-    <div{ph_class(a["body"], "card reveal")}>
-      <h3>{e(a['title'])}</h3>
-      <p>{e(a['body'])}</p>
-    </div>"""
-        for a in COSTS.get("assistance", [])
-    )
-
-    body = f"""
-{page_hero("Cost & payment", COSTS["hero_title"], COSTS["hero_body"])}
-
-<section class="section">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">{e(COSTS['rates_title'])}</p>
-      <h2>Weekly rate by house</h2>
-      <p class="lede">{e(COSTS['rates_note'])}</p>
-    </div>
-    <div class="cards">
-      {rates}
-    </div>
-  </div>
-</section>
-
-<section class="section section--bone">
-  <div class="wrap">
-    <div class="split">
-      <div class="reveal">
-        <p class="eyebrow">{e(COSTS['included_title'])}</p>
-        <h2 style="margin-block:var(--sp-3)">In the rate</h2>
-        <ul class="checklist">{included}</ul>
-      </div>
-      <div class="reveal">
-        <p class="eyebrow">{e(COSTS['not_included_title'])}</p>
-        <h2 style="margin-block:var(--sp-3)">On you</h2>
-        <ul class="checklist checklist--minus">{not_included}</ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap-narrow reveal">
-    <p class="eyebrow">{e(COSTS['insurance_title'])}</p>
-    <h2 style="margin-block:var(--sp-3)">Does insurance cover this?</h2>
-    <p class="lede">{e(COSTS['insurance_body'])}</p>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">Financial help</p>
-      <h2>{e(COSTS['assistance_title'])}</h2>
-      <p class="lede">{e(COSTS['assistance_body'])}</p>
-    </div>
-    <div class="cards">
-      {assistance}
-    </div>
-  </div>
-</section>
-
-{cta_band(COSTS['faq_teaser'], "Read the FAQ, or skip it and just call us. Either works.", "Read the FAQ", "/faq/")}
-"""
-    return shell(
-        title=COSTS["meta_title"],
-        description=COSTS["meta_description"],
-        path="/costs/",
-        body=body,
-    )
-
-
-def build_faq():
-    items = "\n".join(
-        f"""
-      <details class="faq-item">
-        <summary>{e(f['q'])}</summary>
-        <div{ph_class(f["a"], "faq-answer")}>{paragraphs(f['a'])}</div>
-      </details>"""
-        for f in FAQ.get("faqs", [])
-    )
-
-    body = f"""
-{page_hero("FAQ", FAQ["hero_title"], FAQ["hero_body"])}
-
-<section class="section">
-  <div class="wrap-narrow">
-    <div class="faq-list">
-      {items}
-    </div>
-  </div>
-</section>
-
-{cta_band("Didn't find it?",
-          "Call us. There is no question about this that we haven't been asked, and none we'll dodge.",
-          "Call " + SITE['phone'], "tel:" + tel(SITE['phone']))}
-"""
-    return shell(
-        title=FAQ["meta_title"],
-        description=FAQ["meta_description"],
-        path="/faq/",
         body=body,
         head_extra=ld_script(faq_ld()),
     )
@@ -1064,7 +968,7 @@ def build_404():
   <div class="wrap">
     <div class="btn-row">
       <a class="btn btn--lg" href="/">Back to the start</a>
-      <a class="btn btn--lg btn--ghost" href="/homes/">See our houses</a>
+      <a class="btn btn--lg btn--ghost" href="/#houses">See our houses</a>
       <a class="btn btn--lg btn--ghost" href="tel:{e(tel(SITE['phone']))}">{ICON_PHONE} {e(SITE['phone'])}</a>
     </div>
   </div>
@@ -1093,7 +997,9 @@ FAVICON = (
 
 
 def sitemap():
-    paths = ["/", "/homes/", "/about/", "/costs/", "/faq/", "/apply/"]
+    # Only real documents belong in a sitemap — the old section URLs now
+    # redirect, and listing redirects here would be a crawl error.
+    paths = ["/", "/apply/"]
     today = date.today().isoformat()
     urls = "\n".join(
         f"  <url><loc>{DOMAIN}{p}</loc><lastmod>{today}</lastmod>"
@@ -1113,10 +1019,9 @@ def robots():
 
 PAGES = {
     "index.html": build_index,
-    "homes/index.html": build_homes,
-    "about/index.html": build_about,
-    "costs/index.html": build_costs,
-    "faq/index.html": build_faq,
+    # The application form keeps its own page: it's the conversion destination,
+    # worth linking and tracking on its own, and a long form under a long page
+    # is a bad combination.
     "apply/index.html": build_apply,
     "404.html": build_404,
 }
@@ -1181,14 +1086,21 @@ def main(dev=False):
     write("sitemap.xml", sitemap())
     write("robots.txt", robots())
 
-    # Redirect the old-style .html URLs to the clean ones.
+    # The site used to be five pages. Those URLs are in Google's index and may
+    # be in someone's bookmarks, so send each one to its section on the
+    # one-pager rather than to a 404.
     write("_redirects", "\n".join([
-        "/homes.html   /homes/   301",
-        "/about.html   /about/   301",
-        "/costs.html   /costs/   301",
-        "/faq.html     /faq/     301",
-        "/apply.html   /apply/   301",
-        "/contact      /apply/   301",
+        "/homes/       /#houses   301",
+        "/homes.html   /#houses   301",
+        "/about/       /#about    301",
+        "/about.html   /#about    301",
+        "/costs/       /#cost     301",
+        "/costs.html   /#cost     301",
+        "/cost/        /#cost     301",
+        "/faq/         /#faq      301",
+        "/faq.html     /#faq      301",
+        "/apply.html   /apply/    301",
+        "/contact      /apply/    301",
     ]) + "\n")
 
     if dev:
