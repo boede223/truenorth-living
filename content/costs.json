@@ -28,12 +28,12 @@
   "assistance_body": "Say so before you're behind, not after. Options we can walk you through:",
   "assistance": [
     {
-      "title": "Scholarship beds",
-      "body": "PLACEHOLDER — Describe your scholarship or reduced-rate program, how many beds, and how someone applies. Delete this item if you don't offer one."
+      "title": "Financial Assistance",
+      "body": "Recovery should be accessible whenever possible. We understand that financial challenges can make the transition into recovery housing difficult. Our team will work with each individual to explore available options, including flexible payment arrangements, community resources, and any financial assistance that may be available.\n\nWhile funding opportunities vary and cannot be guaranteed, we encourage anyone with financial concerns to contact us. We're committed to helping individuals identify the resources that may support their recovery journey"
     },
     {
       "title": "Payment plans",
-      "body": "PLACEHOLDER — Describe what flexibility you actually offer. Only promise what you'll honor."
+      "body": "We recognize that everyone's financial situation is different. For qualified residents, flexible payment arrangements may be available to help ease the transition into structured recovery housing. Our goal is to work with residents and their families to develop a payment schedule that promotes both stability and accountability."
     },
     {
       "title": "Texas HHSC recovery support",
@@ -41,7 +41,7 @@
     },
     {
       "title": "Employment first",
-      "body": "Most residents are working within three weeks. We treat that as part of the program, not a side quest."
+      "body": "Residents are required to be working within three weeks. We treat that as part of the program, not a side quest."
     }
   ],
   "faq_teaser": "Still have questions about money, rules, or how admission works?",
