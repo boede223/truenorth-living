@@ -1072,9 +1072,12 @@ def build_brochure():
       <span>{e(SITE['hours'])}</span>
     </div>"""
 
-    words = HOME["hero"]["title"].rsplit(" ", 1)
+    # The printed sheet opens on the About quote rather than the website's
+    # headline — it reads better as a standalone document, and the masthead
+    # already says what the organisation is.
+    words = ABOUT["hero_title"].rsplit(" ", 1)
     lede_title = (f'{e(words[0])} <em>{e(words[1])}</em>'
-                  if len(words) == 2 else e(HOME["hero"]["title"]))
+                  if len(words) == 2 else e(ABOUT["hero_title"]))
 
     pillars = "".join(
         f"""
@@ -1160,7 +1163,8 @@ def build_brochure():
 
   <div>
     <h1 class="lede-title">{lede_title}</h1>
-    <p class="lede-body">{e(HOME['hero']['subtitle'])}</p>
+    <p class="lede-body">{e(ABOUT['hero_body'])}</p>
+    <p class="lede-what">{e(HOME['hero']['subtitle'])}</p>
   </div>
 
   <div class="sec">
