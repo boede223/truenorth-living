@@ -191,7 +191,7 @@ collections:
                 name: short
                 widget: string
                 required: false
-                hint: "Under about 100 characters. Leave empty to use the body text.
+                hint: "Under about 100 characters. Leave empty to use the body text."
           - { label: "Team heading", name: team_title, widget: string }
           - label: Team
             name: team
@@ -215,9 +215,20 @@ collections:
           - { label: "Intro paragraph", name: hero_body, widget: text }
           - { label: "Rates label", name: rates_title, widget: string }
           - { label: "Note under rates", name: rates_note, widget: text }
-          - label: "Shown instead of rates before any house is live"
-            name: rates_empty
-            widget: text
+          - label: "Before any house has a published rate"
+            name: rates_pending_title
+            widget: string
+            hint: "Heading on the estimate box, e.g. \"We're still setting rates\"."
+          - { label: "Estimate label", name: rates_range_label, widget: string, hint: "e.g. Expected range" }
+          - { label: "Estimate — low end (no $ sign)", name: rates_range_low, widget: string, hint: "e.g. 1,000" }
+          - { label: "Estimate — high end (no $ sign)", name: rates_range_high, widget: string, hint: "e.g. 1,200" }
+          - label: "Estimate period"
+            name: rates_range_period
+            widget: select
+            options: ["month", "2 weeks", "week"]
+            default: "month"
+          - { label: "Estimate explanation", name: rates_pending_body, widget: text }
+          - { label: "Flexible payment line", name: rates_flex, widget: text }
           - { label: "'What's included' label", name: included_title, widget: string }
           - label: "What's included"
             name: included
@@ -261,7 +272,7 @@ collections:
                 name: short
                 widget: string
                 required: false
-                hint: "One sentence, under about 140 characters. Leave empty to use the full answer.
+                hint: "One sentence, under about 140 characters. Leave empty to use the full answer."
 
       - name: apply
         label: Application page

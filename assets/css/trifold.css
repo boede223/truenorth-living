@@ -1,0 +1,328 @@
+/* ==========================================================================
+   TrueNorth Living — trifold.css
+   A folded leave-behind: 11 × 8.5in landscape, printed both sides.
+
+   FOLD GEOMETRY
+   The panel that tucks inside must be slightly narrower than the two that
+   wrap around it, or the fold buckles at the spine. Outside sheet runs
+   3.625 / 3.6875 / 3.6875; the inside sheet mirrors it.
+
+   Fold the LEFT panel in first, then the RIGHT panel over it — the front
+   cover is the right-hand panel of the outside sheet.
+   ========================================================================== */
+
+@page {
+  size: 11in 8.5in;
+  margin: 0;
+}
+
+:root {
+  --ink:      #16202A;
+  --ink-soft: #4C5966;
+  --ink-mute: #7B8794;
+  --rule:     #DCD5C8;
+  --rule-lt:  #EBE6DC;
+  --paper:    #FAF7F0;
+  --paper-2:  #FFFFFF;
+  --amber:    #9C6413;   /* on paper */
+  --amber-lt: #E8A33D;   /* on dark */
+  --amber-bg: #F5EAD6;
+  --pine:     #1E4038;
+  --night:    #0C141C;
+
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #45494D;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 9pt;
+  line-height: 1.48;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 600; line-height: 1.08;
+  letter-spacing: -.015em; margin: 0;
+  text-wrap: balance;
+}
+p { margin: 0; text-wrap: pretty; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+/* ---------- Toolbar (screen only) ---------------------------------------- */
+.toolbar {
+  position: sticky; top: 0; z-index: 20;
+  background: #23272B; color: #C6CDD4;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  padding: .7rem 1rem; text-align: center;
+  display: flex; align-items: center; justify-content: center;
+  gap: .9rem; flex-wrap: wrap; font-size: 9.5pt;
+}
+.toolbar b { color: #fff; }
+.toolbar button, .toolbar a {
+  font: inherit; font-weight: 600; padding: .5rem 1rem;
+  border-radius: 7px; cursor: pointer; text-decoration: none;
+  border: 1px solid rgba(255,255,255,.28); background: transparent; color: #fff;
+}
+.toolbar button.primary { background: #E8A33D; border-color: #E8A33D; color: #1A1207; }
+.toolbar button:hover, .toolbar a:hover { border-color: #E8A33D; }
+
+/* ---------- The sheet ---------------------------------------------------- */
+.sheet {
+  width: 11in; height: 8.5in;
+  margin: .3in auto;
+  background: var(--paper);
+  display: grid;
+  box-shadow: 0 6px 30px rgba(0,0,0,.4);
+  position: relative;
+  overflow: hidden;
+}
+/* Outside: tuck-in flap first. Inside: it lands last. */
+.sheet--out { grid-template-columns: 3.625in 3.6875in 3.6875in; }
+.sheet--in  { grid-template-columns: 3.6875in 3.6875in 3.625in; }
+
+.panel {
+  padding: .34in .3in;
+  display: flex; flex-direction: column;
+  gap: .13in;
+  position: relative;
+  min-width: 0;
+}
+/* Hairlines showing where the folds land. Screen only — never printed. */
+.sheet--out .panel + .panel,
+.sheet--in  .panel + .panel { border-left: 1px dashed rgba(22,32,42,.18); }
+
+.panel--dark {
+  background:
+    radial-gradient(120% 90% at 78% 18%, rgba(232,163,61,.20), transparent 60%),
+    linear-gradient(160deg, #16222E 0%, var(--night) 62%, #0A1218 100%);
+  color: #F2EFE7;
+}
+.panel--dark h1, .panel--dark h2, .panel--dark h3 { color: #fff; }
+
+/* ---------- Brand -------------------------------------------------------- */
+.brandblock { display: flex; align-items: center; gap: .12in; }
+.brandblock svg { height: .52in; width: auto; flex: none; }
+.brandblock .name {
+  font-family: var(--display); font-size: 17pt; font-weight: 600; letter-spacing: -.02em;
+  line-height: 1;
+}
+.brandblock .name i { font-style: normal; color: var(--amber); }
+.panel--dark .brandblock .name { color: #fff; }
+.panel--dark .brandblock .name i { color: var(--amber-lt); }
+.brandblock .sub {
+  font-size: 6.5pt; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--ink-mute); margin-top: 3pt;
+  white-space: nowrap;   /* letter-spacing was breaking LIVING across lines */
+}
+.panel--dark .brandblock .sub { color: rgba(242,239,231,.6); }
+
+/* ---------- Labels ------------------------------------------------------- */
+.label {
+  font-size: 6.8pt; font-weight: 700; letter-spacing: .17em;
+  text-transform: uppercase; color: var(--amber);
+}
+.panel--dark .label { color: var(--amber-lt); }
+.rule-under { width: .5in; height: 2px; background: var(--amber); margin-top: .06in; }
+
+.h-lead { font-size: 15pt; line-height: 1.06; }
+.h-lead em { font-style: italic; color: var(--amber); }
+.h-cover { font-size: 27pt; line-height: 1.02; }
+.h-cover em { font-style: italic; color: var(--amber-lt); display: block; }
+.h-sec { font-size: 12.5pt; }
+
+.body-sm { font-size: 8.5pt; color: var(--ink-soft); }
+.panel--dark .body-sm { color: #D3DBE2; font-size: 9.5pt; line-height: 1.5; }
+
+/* ---------- Cover -------------------------------------------------------- */
+.cover-rose {
+  position: absolute; right: -1.05in; top: 2.0in;
+  width: 3.5in; height: 3.5in;
+  color: var(--amber-lt); opacity: .3; pointer-events: none;
+}
+.cover-foot {
+  margin-top: auto; border-top: 1px solid rgba(242,239,231,.22); padding-top: .13in;
+}
+.cover-foot .num {
+  font-family: var(--display); font-size: 19pt; font-weight: 600; color: var(--amber-lt);
+  letter-spacing: -.01em; line-height: 1.1;
+}
+.cover-foot .web { font-size: 8.5pt; color: rgba(242,239,231,.75); }
+
+.pill {
+  display: inline-flex; align-items: center; gap: .08in;
+  padding: .05in .14in; border-radius: 99px;
+  border: 1px solid var(--amber-lt); color: var(--amber-lt);
+  font-size: 7.5pt; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  align-self: flex-start;
+}
+.pill i { width: 6px; height: 6px; border-radius: 50%; background: var(--amber-lt); }
+
+/* ---------- Contact rows ------------------------------------------------- */
+.rows { display: grid; gap: 0; }
+.row {
+  display: grid; grid-template-columns: .22in 1fr; gap: .1in;
+  align-items: start; padding: .09in 0;
+  border-bottom: 1px solid var(--rule-lt);
+}
+.row:last-child { border-bottom: 0; }
+.row svg { width: 13px; height: 13px; color: var(--amber); margin-top: 2pt; }
+.row .k {
+  font-size: 6.5pt; font-weight: 700; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--ink-mute);
+}
+.row .v { font-size: 10pt; font-weight: 600; color: var(--ink); line-height: 1.25; }
+.row .v.big { font-family: var(--display); font-size: 14pt; letter-spacing: -.01em; }
+
+/* ---------- Cards -------------------------------------------------------- */
+.card {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 6pt;
+  padding: .16in .17in;
+}
+.card p + p { margin-top: .07in; }
+.card .lead { font-weight: 600; color: var(--ink); font-size: 9pt; }
+
+.note-inset {
+  border-left: 2.5px solid var(--amber);
+  padding-left: .12in; margin-top: .11in;
+  font-size: 8pt; color: var(--ink-soft);
+}
+.note-inset b { color: var(--ink); }
+
+.crisis {
+  background: var(--pine); color: #EAF2ED;
+  border-radius: 6pt; padding: .14in .16in;
+  margin-top: auto;
+}
+.crisis .label { color: #A9C9B8; }
+.crisis .line {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: .12in; padding-top: .07in; font-size: 8pt; color: #C3D5CB;
+}
+.crisis .line b {
+  font-family: var(--display); font-size: 12pt; color: #fff; white-space: nowrap;
+}
+
+/* ---------- QR ----------------------------------------------------------- */
+.qr {
+  display: grid; grid-template-columns: .95in 1fr; gap: .14in;
+  align-items: center;
+  background: var(--paper-2); border: 1px solid var(--rule);
+  border-radius: 6pt; padding: .14in;
+}
+.qr img { width: 100%; height: auto; display: block; }
+.qr-empty {
+  aspect-ratio: 1; border: 1.5px dashed rgba(156,100,19,.55); border-radius: 4pt;
+  display: grid; place-content: center; text-align: center;
+  font-size: 6pt; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--amber); padding: .06in;
+}
+.qr h3 { font-size: 10pt; margin-bottom: 3pt; }
+.qr p { font-size: 7.5pt; color: var(--ink-soft); }
+
+/* ---------- Steps / lists ------------------------------------------------ */
+.steps { display: grid; gap: .1in; }
+.stepline { display: grid; grid-template-columns: .62in 1fr; gap: .1in; align-items: start; }
+.stepline .k {
+  font-size: 6.8pt; font-weight: 700; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--amber); line-height: 1.35; padding-top: 1pt;
+}
+.stepline p { font-size: 8.5pt; color: var(--ink-soft); }
+
+.ticks { display: grid; gap: .05in; }
+.ticks li {
+  display: grid; grid-template-columns: .13in 1fr; gap: .07in;
+  align-items: start; font-size: 8pt; color: var(--ink-soft);
+  padding: 2pt 0; border-bottom: 1px solid var(--rule-lt);
+}
+.ticks li:last-child { border-bottom: 0; }
+.ticks li::before { content: "✓"; color: var(--amber); font-weight: 700; }
+.ticks--no li::before { content: "—"; color: var(--ink-mute); }
+
+.blocks { display: grid; gap: .11in; }
+.block h3 { font-size: 9.5pt; margin-bottom: 2pt; }
+.block p { font-size: 8pt; color: var(--ink-soft); }
+
+.numbered { display: grid; gap: .1in; }
+.numbered .item { display: grid; grid-template-columns: .26in 1fr; gap: .1in; align-items: start; }
+.numbered .n {
+  font-family: var(--display); font-size: 10pt; font-weight: 700; color: var(--amber);
+  border-top: 2px solid var(--amber); padding-top: 3pt; font-variant-numeric: tabular-nums;
+}
+.numbered h3 { font-size: 9.5pt; margin-bottom: 2pt; }
+.numbered p { font-size: 8pt; color: var(--ink-soft); }
+
+/* ---------- Pull quote --------------------------------------------------- */
+.pull {
+  font-family: var(--display); font-size: 11pt; line-height: 1.3;
+  color: var(--ink); font-style: italic;
+}
+.byline {
+  margin-top: .09in; font-size: 7pt; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--amber);
+}
+.byline span { display: block; color: var(--ink-mute); font-weight: 600; }
+
+.legal {
+  margin-top: .11in; font-size: 6.8pt; color: var(--ink-mute); line-height: 1.42;
+}
+
+.cta-dark {
+  background: var(--night); color: #F2EFE7;
+  border-radius: 6pt; padding: .16in .17in; margin-top: auto;
+}
+.cta-dark h3 { font-size: 12pt; color: #fff; }
+.cta-dark p { font-size: 8pt; color: #BDC7D0; margin-top: 3pt; }
+.cta-dark .num {
+  font-family: var(--display); font-size: 16pt; font-weight: 600;
+  color: var(--amber-lt); margin-top: .08in; letter-spacing: -.01em;
+}
+.cta-dark .web { font-size: 7.5pt; color: rgba(242,239,231,.68); }
+
+.panel-foot {
+  margin-top: auto; padding-top: .1in; border-top: 1px solid var(--rule);
+  font-size: 6.5pt; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute);
+}
+
+/* Placeholder flag, same convention as the rest of the project */
+.ph { outline: 1px dashed rgba(196,100,60,.6); outline-offset: 2px; }
+
+/* ---------- Print -------------------------------------------------------- */
+@media print {
+  body { background: #fff; }
+  .toolbar { display: none !important; }
+  .sheet {
+    margin: 0; box-shadow: none;
+    break-after: page; page-break-after: always;
+  }
+  .sheet:last-of-type { break-after: auto; page-break-after: auto; }
+  .panel + .panel { border-left: 0 !important; }
+  .panel { break-inside: avoid; page-break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+  /* Backgrounds must survive the print dialog or the cover prints white. */
+  .panel--dark, .crisis, .cta-dark, .card, .qr {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* ---------- Screen fallback ---------------------------------------------- */
+@media screen and (max-width: 11.6in) {
+  .sheet {
+    width: auto; height: auto; max-width: 100%;
+    grid-template-columns: 1fr !important;
+    margin: .4rem;
+  }
+  .panel { padding: 1.1rem; min-height: auto; }
+  .panel + .panel { border-left: 0; border-top: 1px dashed rgba(22,32,42,.18); }
+  .cover-rose { display: none; }
+  .h-cover { font-size: 22pt; }
+}

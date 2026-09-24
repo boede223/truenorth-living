@@ -211,6 +211,21 @@ def rate_of(house, short=False):
     return f"${e(amount)}<small>{short_unit if short else '/' + long_unit}</small>"
 
 
+def rate_estimate():
+    """The expected-rate block shown until real house rates are published.
+
+    Returns (label, amount, period, body, flex). Kept in one place so the
+    website, the two-page sheet and the trifold always quote the same number.
+    """
+    return (
+        COSTS.get("rates_range_label", "Expected range"),
+        f"${COSTS.get('rates_range_low','')}\u2013{COSTS.get('rates_range_high','')}",
+        COSTS.get("rates_range_period", "month"),
+        COSTS.get("rates_pending_body", ""),
+        COSTS.get("rates_flex", ""),
+    )
+
+
 def published_homes():
     """Houses with 'Show on website' turned on.
 
@@ -410,6 +425,7 @@ def shell(*, title, description, path, body, head_extra=""):
           <li><a href="/#faq">FAQ</a></li>
           <li><a href="/apply/">Apply for a bed</a></li>
           <li><a href="/brochure/">Printable info sheet</a></li>
+          <li><a href="/trifold/">Trifold brochure</a></li>
         </ul>
       </div>
       <div>
@@ -604,9 +620,14 @@ def build_index():
       </div>"""
         for h in published_homes()
     ) or f"""
-      <div class="card reveal">
-        <h3>Rates are being set now</h3>
-        <p>{e(COSTS.get('rates_empty',''))}</p>
+      <div class="card reveal" style="grid-column:1/-1">
+        <p class="eyebrow">{e(rate_estimate()[0])}</p>
+        <p class="house-rate" style="font-size:var(--t-3xl);display:block;margin:.3rem 0 .6rem">
+          {e(rate_estimate()[1])}<small style="font-size:var(--t-base)">/{e(rate_estimate()[2])}</small>
+        </p>
+        <h3>{e(COSTS.get('rates_pending_title',''))}</h3>
+        <p style="margin-top:.4rem">{e(rate_estimate()[3])}</p>
+        <p class="note" style="margin-top:var(--sp-3)">{e(rate_estimate()[4])}</p>
       </div>"""
 
     included = "\n".join(f"<li>{e(i)}</li>" for i in COSTS.get("included", []))
@@ -1111,10 +1132,18 @@ def build_brochure():
             for h in live[:3]
         )
     else:
+        lbl, amt, per, body, flex = rate_estimate()
         rates = f"""
-      <div class="rate-card" style="grid-column:1/-1">
-        <h3>Rates are being set now</h3>
-        <p style="margin-top:3pt">{e(COSTS.get('rates_empty',''))}</p>
+      <div class="rate-card" style="grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:.22in;align-items:center">
+        <div>
+          <p style="font-size:7pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)">{e(lbl)}</p>
+          <span class="n" style="font-size:26pt">{e(amt)}<small>/{e(per)}</small></span>
+        </div>
+        <div>
+          <h3>{e(COSTS.get('rates_pending_title',''))}</h3>
+          <p style="margin-top:2pt">{e(body)}</p>
+          <p style="margin-top:4pt;color:var(--ink)"><b>{e(flex)}</b></p>
+        </div>
       </div>"""
 
     included = "".join(f"<li>{e(i)}</li>" for i in COSTS.get("included", [])[:4])
@@ -1233,6 +1262,286 @@ def build_brochure():
     return brochure_shell(body)
 
 
+ICON_MAIL = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+             'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+             '<rect x="2" y="4.5" width="20" height="15" rx="2"/><path d="m2.5 6 9.5 7 9.5-7"/></svg>')
+
+ICON_GLOBE = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+              'stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/>'
+              '<path d="M2.5 12h19M12 2.5c2.6 2.7 4 6 4 9.5s-1.4 6.8-4 9.5c-2.6-2.7-4-6-4-9.5s1.4-6.8 4-9.5z"/></svg>')
+
+ICON_PIN = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            '<path d="M12 21.5s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10.5" r="2.6"/></svg>')
+
+
+def trifold_shell(body):
+    """Bare document shell for the folded leave-behind."""
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{e(SITE['org_name'])} — Trifold Brochure</title>
+<meta name="description" content="Printable trifold brochure for {e(SITE['org_name'])}.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="{e(DOMAIN)}/trifold/">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400..700&display=swap">
+<link rel="stylesheet" href="/assets/css/trifold.css">
+</head>
+<body>
+<div class="toolbar">
+  <b>Trifold brochure</b>
+  <span>Print double-sided on Letter, landscape, flip on short edge</span>
+  <button class="primary" type="button" onclick="window.print()">Print or save as PDF</button>
+  <a href="/brochure/">Two-page sheet</a>
+  <a href="/">Website</a>
+</div>
+<main>
+{body}
+</main>
+</body>
+</html>
+"""
+
+
+def build_trifold():
+    """An 11x8.5 landscape trifold, printed both sides.
+
+    Same content as everything else, so it can never go stale. Panel order
+    follows the fold: on the outside sheet the left panel tucks in first and
+    the right panel is the front cover.
+    """
+    status, avail_text = availability()
+    live = published_homes()
+    phone_href = tel(SITE["phone"])
+    web = DOMAIN.replace("https://", "").replace("http://", "")
+
+    def brand(dark=False):
+        return f"""
+      <div class="brandblock">
+        {LOGO}
+        <div>
+          <div class="name">True<i>North</i></div>
+          <div class="sub">Living</div>
+        </div>
+      </div>"""
+
+    # ---- cover -----------------------------------------------------------
+    words = HOME["hero"]["title"].split(". ")
+    if len(words) >= 2:
+        cover_head = f"{e(words[0])}. <em>{e('. '.join(words[1:]))}</em>"
+    else:
+        cover_head = e(HOME["hero"]["title"])
+
+    cover = f"""
+    <section class="panel panel--dark">
+      {ROSE.replace('class="cta-rose"', 'class="cover-rose"')}
+      {brand(dark=True)}
+      <p class="label" style="margin-top:.22in">{e(HOME['hero']['eyebrow'])}</p>
+      <h1 class="h-cover">{cover_head}</h1>
+      <p class="body-sm">{e(HOME['hero']['subtitle'])}</p>
+      <p class="pill"><i></i>{e(avail_text)}</p>
+      <div class="cover-foot">
+        <p class="label">Call or text</p>
+        <p class="num">{e(SITE['phone'])}</p>
+        <p class="web">{e(web)}</p>
+      </div>
+    </section>"""
+
+    # ---- back panel: contact --------------------------------------------
+    qr = HOME.get("qr_image") or ""
+    qr_box = (f'<img src="{e(qr)}" alt="QR code linking to {e(web)}">'
+              if qr else
+              '<div class="qr-empty">Add QR<br>in admin</div>')
+
+    back = f"""
+    <section class="panel">
+      {brand()}
+      <div style="margin-top:.2in">
+        <p class="label">Talk to a person today</p>
+        <h2 class="h-lead" style="margin-top:.06in">No waiting rooms.<br>No runaround.</h2>
+        <div class="rule-under"></div>
+      </div>
+      <div class="rows">
+        <div class="row">{ICON_PHONE}<div><p class="k">Call or text</p><p class="v big">{e(SITE['phone'])}</p></div></div>
+        <div class="row">{ICON_MAIL}<div><p class="k">Email</p><p class="v">{e(SITE['email'])}</p></div></div>
+        <div class="row">{ICON_GLOBE}<div><p class="k">Online</p><p class="v">{e(web)}</p></div></div>
+        <div class="row">{ICON_PIN}<div><p class="k">Where</p><p class="v">{e(SITE['street'])}</p></div></div>
+      </div>
+      <div class="qr">
+        {qr_box}
+        <div>
+          <h3>Scan to visit our website</h3>
+          <p>Houses, current rates, the full FAQ, and the five-minute application.</p>
+        </div>
+      </div>
+      <div class="crisis">
+        <p class="label">{e(SITE['crisis_label'])}</p>
+        <div class="line"><span>{e(SITE['crisis_line_label'])}</span><b>{e(SITE['crisis_line'])}</b></div>
+        <div class="line"><span>SAMHSA National Helpline</span><b>{e(SITE['samhsa_line'])}</b></div>
+      </div>
+      <p class="pull" style="margin-top:.14in">&ldquo;{e(ABOUT.get('founders_quote',''))}&rdquo;</p>
+      <p class="byline">{e(' & '.join(t['name'] for t in ABOUT.get('team', [])[:2]))}
+        <span>{e(ABOUT.get('founders_note',''))}</span></p>
+      <p class="legal">{e(SITE['footer_note'])}</p>
+    </section>"""
+
+    # ---- tuck-in flap: cost + how to apply -------------------------------
+    if live:
+        rate_lines = "".join(
+            f"<li>{e(h['name'])} — {rate_of(h)}</li>" for h in live[:3]
+        )
+        rate_block = f'<ul class="ticks">{rate_lines}</ul>'
+    else:
+        lbl, amt, per, body, flex = rate_estimate()
+        rate_block = f"""<div class="card">
+          <p style="font-size:6.5pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)">{e(lbl)}</p>
+          <p style="font-family:var(--display);font-size:20pt;font-weight:600;color:var(--amber);line-height:1.1;margin:2pt 0 4pt">
+            {e(amt)}<span style="font-family:var(--sans);font-size:8pt;color:var(--ink-mute);font-weight:400">/{e(per)}</span>
+          </p>
+          <p class="lead">{e(COSTS.get('rates_pending_title',''))}</p>
+          <p style="font-size:8pt;color:var(--ink-soft);margin-top:.04in">{e(body)}</p>
+          <div class="note-inset" style="margin-top:.09in"><b>{e(flex)}</b></div>
+        </div>"""
+
+    steps = "".join(
+        f"""
+        <div class="stepline">
+          <span class="k">{e(a['step'])}</span>
+          <p>{e(a['detail'])}</p>
+        </div>"""
+        for a in APPLY.get("after", [])
+    )
+
+    flap = f"""
+    <section class="panel">
+      <div>
+        <p class="label">Cost &amp; admission</p>
+        <h2 class="h-lead" style="margin-top:.06in">What it costs, in <em>plain numbers.</em></h2>
+        <div class="rule-under"></div>
+      </div>
+      {rate_block}
+      <div class="note-inset">
+        <b>Insurance, honestly.</b> {e(COSTS.get('insurance_short') or COSTS['insurance_body'])}
+      </div>
+      <div style="margin-top:.1in">
+        <p class="label">How to get a bed</p>
+        <h2 class="h-sec" style="margin-top:.06in">{e(APPLY['hero_title'])}</h2>
+      </div>
+      <div class="steps">{steps}</div>
+      <p style="font-size:8pt;color:var(--ink-soft);margin-top:.06in">
+        <b style="color:var(--ink)">Nothing here is a commitment.</b>
+        It starts a conversation. You can apply for yourself or for someone else, and we never
+        share your information with treatment centers or marketers.
+      </p>
+      <div class="cta-dark">
+        <h3>Let's find you a bed.</h3>
+        <p>If it's easier to just call, call. A person picks up.</p>
+        <p class="num">{e(SITE['phone'])}</p>
+        <p class="web">{e(web)}/apply</p>
+      </div>
+    </section>"""
+
+    # ---- inside panels ---------------------------------------------------
+    pillars = "".join(
+        f"""
+        <div class="block">
+          <h3>{e(p['title'])}</h3>
+          <p>{e(p['body'])}</p>
+        </div>"""
+        for p in HOME.get("pillars", [])[:4]
+    )
+
+    path = "".join(
+        f"""
+        <div class="item">
+          <span class="n">{i + 1:02d}</span>
+          <div>
+            <h3>{e(s['label'])}</h3>
+            <p>{e(s['detail'])}</p>
+          </div>
+        </div>"""
+        for i, s in enumerate(HOME.get("path", []))
+    )
+
+    standards = "".join(
+        f"""
+        <div{ph_class(s['body'], 'block')}>
+          <h3>{e(s['title'])}</h3>
+          <p>{e(s.get('short') or s['body'])}</p>
+        </div>"""
+        for s in ABOUT.get("standards", [])[:4]
+    )
+
+    included = "".join(f"<li>{e(i)}</li>" for i in COSTS.get("included", [])[:5])
+    excluded = "".join(f"<li>{e(i)}</li>" for i in COSTS.get("not_included", [])[:3])
+
+    inside_1 = f"""
+    <section class="panel">
+      <div>
+        <p class="label">Our approach</p>
+        <h2 class="h-lead" style="margin-top:.06in">{e(HOME['pillars_title'])}</h2>
+        <div class="rule-under"></div>
+      </div>
+      <div class="blocks">{pillars}</div>
+      <div style="margin-top:.06in">
+        <p class="label">In the rate</p>
+        <ul class="ticks" style="margin-top:.06in">{included}</ul>
+      </div>
+      <p class="panel-foot">{e(SITE['org_name'])}</p>
+    </section>"""
+
+    inside_2 = f"""
+    <section class="panel">
+      <div>
+        <p class="label">What the first ninety days look like</p>
+        <h2 class="h-lead" style="margin-top:.06in">{e(HOME['path_title'])}</h2>
+        <div class="rule-under"></div>
+      </div>
+      <div class="numbered">{path}</div>
+      <div style="margin-top:.06in">
+        <p class="label">Not included</p>
+        <ul class="ticks ticks--no" style="margin-top:.06in">{excluded}</ul>
+      </div>
+      <p class="panel-foot">{e(web)}</p>
+    </section>"""
+
+    inside_3 = f"""
+    <section class="panel">
+      <div>
+        <p class="label">Accountability</p>
+        <h2 class="h-lead" style="margin-top:.06in">{e(ABOUT['standards_title'])}</h2>
+        <div class="rule-under"></div>
+      </div>
+      <p class="body-sm">{e(ABOUT['standards_body'])}</p>
+      <div class="blocks">{standards}</div>
+      <div class="cta-dark">
+        <h3>{e(HOMES.get('empty_title') if not live else 'There may be a bed tonight.')}</h3>
+        <p>{e(HOMES.get('empty_short','') if not live else 'Call and we will tell you exactly what is open right now.')}</p>
+        <p class="num">{e(SITE['phone'])}</p>
+      </div>
+    </section>"""
+
+    body = f"""
+<section class="sheet sheet--out" aria-label="Outside of the brochure">
+  {flap}
+  {back}
+  {cover}
+</section>
+
+<section class="sheet sheet--in" aria-label="Inside of the brochure">
+  {inside_1}
+  {inside_2}
+  {inside_3}
+</section>
+"""
+    return trifold_shell(body)
+
+
 def build_404():
     body = f"""
 {page_hero("404", "This page went for a walk.", "The link's broken, but the phone still works. Try one of these instead.")}
@@ -1298,6 +1607,8 @@ PAGES = {
     # Printable two-page information sheet. Built from the same JSON as the
     # site, so it can't drift out of date.
     "brochure/index.html": build_brochure,
+    # Folded leave-behind, same content, different physical format.
+    "trifold/index.html": build_trifold,
     "404.html": build_404,
 }
 
