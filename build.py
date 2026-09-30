@@ -1603,9 +1603,15 @@ def build_landlords():
       <h2 class="eyebrow">{e(L['assurances_label'])}</h2>
       <ul class="ll-assure">{assurances}</ul>
     </div>
-    <div class="ll-impact">
-      <h3>{e(L['impact_title'])}</h3>
-      <p>{e(L['impact_body'])}</p>
+    <div class="ll-right">
+      <div class="ll-proof">
+        <h3>{e(L['proof_title'])}</h3>
+        <p>{e(L['proof_body'])}</p>
+      </div>
+      <div class="ll-impact">
+        <h3>{e(L['impact_title'])}</h3>
+        <p>{e(L['impact_body'])}</p>
+      </div>
     </div>
   </div>
 

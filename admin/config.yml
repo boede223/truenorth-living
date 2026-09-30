@@ -327,6 +327,11 @@ collections:
             name: assurances
             widget: list
             field: { label: Item, name: item, widget: string }
+          - label: "Proof-of-funds heading"
+            name: proof_title
+            widget: string
+            hint: "Answers the owner's first question: will I get paid."
+          - { label: "Proof-of-funds text", name: proof_body, widget: text }
           - { label: "Impact heading", name: impact_title, widget: string }
           - { label: "Impact text", name: impact_body, widget: text }
           - { label: "Closing heading", name: cta_title, widget: string }

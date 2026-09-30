@@ -85,10 +85,23 @@
   background: var(--pine);
   color: #EAF2ED;
   border-radius: 7pt;
-  padding: .16in .17in;
+  padding: .13in .15in;
 }
 .ll-impact h3 { color: #fff; font-size: 12pt; }
 .ll-impact p { font-size: 8.1pt; line-height: 1.4; color: #C3D5CB; margin-top: 4pt; }
+
+/* The right column stacks the money answer above the mission one. An owner
+   cares about getting paid first; they read the good-it-does second. */
+.ll-right { display: grid; gap: .09in; align-content: start; }
+
+.ll-proof {
+  border: 1.5px solid var(--amber);
+  background: var(--amber-bg, #F5EAD6);
+  border-radius: 7pt;
+  padding: .12in .14in;
+}
+.ll-proof h3 { font-size: 11pt; color: #6E4508; }
+.ll-proof p { font-size: 8.1pt; line-height: 1.4; color: #7A5410; margin-top: 3pt; }
 
 /* ---------- Closing ------------------------------------------------------ */
 .ll-cta {
