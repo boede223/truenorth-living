@@ -299,6 +299,41 @@ collections:
               - { label: When, name: step, widget: string }
               - { label: What, name: detail, widget: text }
 
+      - name: landlords
+        label: Property owner flyer
+        file: content/landlords.json
+        description: >-
+          The one-page flyer you send to landlords. Deliberately carries no
+          dollar figures — repair thresholds and rent are negotiated per
+          property and belong in the written agreement, not on a flyer.
+        fields:
+          - { label: "Browser tab title", name: meta_title, widget: string }
+          - { label: "Small label above headline", name: eyebrow, widget: string }
+          - { label: Headline, name: hero_title, widget: string }
+          - { label: "Gold line under the headline", name: hero_sub, widget: string }
+          - { label: "Opening paragraph", name: intro, widget: text }
+          - { label: "Label above the six points", name: points_label, widget: string }
+          - label: "The six selling points"
+            name: points
+            widget: list
+            label_singular: Point
+            summary: "{{fields.title}}"
+            hint: "Six fits the page. A seventh will push it onto a second sheet."
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+          - { label: "'How the house is run' label", name: assurances_label, widget: string }
+          - label: "How the house is run"
+            name: assurances
+            widget: list
+            field: { label: Item, name: item, widget: string }
+          - { label: "Impact heading", name: impact_title, widget: string }
+          - { label: "Impact text", name: impact_body, widget: text }
+          - { label: "Closing heading", name: cta_title, widget: string }
+          - { label: "Closing text", name: cta_body, widget: text }
+          - { label: "Label under the phone number", name: cta_button, widget: string }
+          - { label: "Small print", name: footnote, widget: text }
+
   # ---------------------------------------------------------------------------
   - name: settings
     label: Contact & Settings

@@ -1,0 +1,145 @@
+/* ==========================================================================
+   TrueNorth Living — landlords.css
+   One-page flyer for property owners. Layers on brochure.css, which already
+   defines the sheet, the masthead and the paper palette.
+
+   Tone note: an owner reads this asking "what is my risk and my hassle".
+   So risk and hassle come first, and the good-it-does comes last.
+   ========================================================================== */
+
+/* Tighter vertical rhythm than the brochure — this one page is dense. */
+.sheet { gap: .11in; }
+/* The flyer carries its own masthead spacing — tighter than the brochure. */
+.sheet .masthead { padding-bottom: .13in; }
+.ll-hero { margin-top: .02in; }
+.ll-hero h1 {
+  font-size: 22pt;
+  line-height: 1.05;
+  max-width: 32ch;
+  letter-spacing: -.02em;
+}
+.ll-sub {
+  font-family: var(--display);
+  font-size: 12pt;
+  font-style: italic;
+  color: var(--amber);
+  margin-top: .07in;
+  line-height: 1.25;
+}
+.ll-intro {
+  font-size: 10pt;
+  color: var(--ink-soft);
+  max-width: 78ch;
+  margin-top: .08in;
+  padding-top: .08in;
+  border-top: 1px solid var(--rule-lt);
+}
+
+/* ---------- The six points ----------------------------------------------- */
+.ll-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .105in .24in;
+}
+.ll-point {
+  display: grid;
+  grid-template-columns: .3in 1fr;
+  gap: .12in;
+  align-items: start;
+  break-inside: avoid;
+}
+.ll-point .n {
+  font-family: var(--display);
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+  border-top: 2px solid var(--amber);
+  padding-top: 4pt;
+  line-height: 1;
+}
+.ll-point h3 { font-size: 10pt; margin-bottom: 2pt; }
+.ll-point p { font-size: 8.1pt; line-height: 1.33; color: var(--ink-soft); }
+
+/* ---------- Assurances + impact, side by side ---------------------------- */
+.ll-split {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: .26in;
+  align-items: start;
+}
+.ll-assure li {
+  display: grid;
+  grid-template-columns: .15in 1fr;
+  gap: .08in;
+  align-items: start;
+  font-size: 8.1pt;
+  color: var(--ink-soft);
+  padding: 2pt 0;
+  border-bottom: 1px solid var(--rule-lt);
+}
+.ll-assure li:last-child { border-bottom: 0; }
+.ll-assure li::before { content: "✓"; color: var(--amber); font-weight: 700; }
+
+.ll-impact {
+  background: var(--pine);
+  color: #EAF2ED;
+  border-radius: 7pt;
+  padding: .16in .17in;
+}
+.ll-impact h3 { color: #fff; font-size: 12pt; }
+.ll-impact p { font-size: 8.1pt; line-height: 1.4; color: #C3D5CB; margin-top: 4pt; }
+
+/* ---------- Closing ------------------------------------------------------ */
+.ll-cta {
+  margin-top: auto;
+  background: var(--ink);
+  color: #F2EFE7;
+  border-radius: 7pt;
+  padding: .17in .2in;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: .26in;
+  align-items: center;
+}
+.ll-cta h2 { color: #fff; font-size: 14pt; }
+.ll-cta p { font-size: 8.3pt; color: #BDC7D0; margin-top: 4pt; max-width: 46ch; }
+.ll-cta .num {
+  font-family: var(--display);
+  font-size: 21pt;
+  font-weight: 600;
+  color: var(--amber-lt, #E8A33D);
+  letter-spacing: -.01em;
+  text-align: right;
+  white-space: nowrap;
+  line-height: 1.15;
+}
+.ll-cta .num small {
+  display: block;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 400;
+  color: rgba(242,239,231,.72);
+  letter-spacing: .02em;
+}
+.ll-foot {
+  font-size: 6.8pt;
+  color: var(--ink-mute);
+  line-height: 1.4;
+  padding-top: .08in;
+  border-top: 1px solid var(--rule);
+}
+
+@media print {
+  .ll-impact, .ll-cta {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+@media screen and (max-width: 9in) {
+  .ll-grid, .ll-split { grid-template-columns: 1fr; }
+  .ll-cta { grid-template-columns: 1fr; }
+  .ll-cta .num { text-align: left; }
+  .ll-hero h1 { font-size: 21pt; }
+}

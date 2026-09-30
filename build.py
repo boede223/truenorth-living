@@ -35,7 +35,7 @@ def load(name):
         return json.load(fh)
 
 
-SITE = HOME = HOMES = ABOUT = COSTS = FAQ = APPLY = None
+SITE = HOME = HOMES = ABOUT = COSTS = FAQ = APPLY = LANDLORDS = None
 DOMAIN = ""
 
 
@@ -46,7 +46,7 @@ def reload_content():
     this, the watcher would rebuild using whatever JSON was loaded when the
     process started and your edits would never show up.
     """
-    global SITE, HOME, HOMES, ABOUT, COSTS, FAQ, APPLY, DOMAIN
+    global SITE, HOME, HOMES, ABOUT, COSTS, FAQ, APPLY, LANDLORDS, DOMAIN
     SITE = load("site")
     HOME = load("home")
     HOMES = load("homes")
@@ -54,6 +54,7 @@ def reload_content():
     COSTS = load("costs")
     FAQ = load("faq")
     APPLY = load("apply")
+    LANDLORDS = load("landlords")
     DOMAIN = SITE.get("domain", "").rstrip("/")
 
 
@@ -426,6 +427,7 @@ def shell(*, title, description, path, body, head_extra=""):
           <li><a href="/apply/">Apply for a bed</a></li>
           <li><a href="/brochure/">Printable info sheet</a></li>
           <li><a href="/trifold/">Trifold brochure</a></li>
+          <li><a href="/landlords/">For property owners</a></li>
         </ul>
       </div>
       <div>
@@ -1542,6 +1544,114 @@ def build_trifold():
     return trifold_shell(body)
 
 
+def build_landlords():
+    """One-page flyer aimed at property owners.
+
+    An owner reads this asking two questions: what is my risk, and how much
+    hassle is this. So risk and hassle lead, and the good-it-does closes.
+    No dollar figures — repair thresholds are negotiated per property and
+    belong in the agreement, not on a flyer.
+    """
+    L = LANDLORDS
+    web = DOMAIN.replace("https://", "").replace("http://", "")
+
+    points = "".join(
+        f"""
+      <div class="ll-point">
+        <span class="n">{i + 1:02d}</span>
+        <div>
+          <h3>{e(p['title'])}</h3>
+          <p>{e(p['body'])}</p>
+        </div>
+      </div>"""
+        for i, p in enumerate(L.get("points", []))
+    )
+
+    assurances = "".join(f"<li>{e(a)}</li>" for a in L.get("assurances", []))
+
+    body = f"""
+<section class="sheet">
+  <div class="masthead">
+    <div class="brandblock">
+      {LOGO}
+      <div>
+        <div class="name">True<i>North</i> Living</div>
+        <div class="sub">{e(SITE['tagline'])}</div>
+      </div>
+    </div>
+    <div class="contact">
+      <span class="tel">{e(SITE['phone'])}</span>
+      <span>{e(SITE['email'])}</span><br>
+      <span>{e(web)}</span>
+    </div>
+  </div>
+
+  <div class="ll-hero">
+    <p class="eyebrow">{e(L['eyebrow'])}</p>
+    <h1>{e(L['hero_title'])}</h1>
+    <p class="ll-sub">{e(L['hero_sub'])}</p>
+    <p class="ll-intro">{e(L['intro'])}</p>
+  </div>
+
+  <div class="sec">
+    <h2 class="eyebrow">{e(L['points_label'])}</h2>
+    <div class="ll-grid">{points}</div>
+  </div>
+
+  <div class="ll-split">
+    <div>
+      <h2 class="eyebrow">{e(L['assurances_label'])}</h2>
+      <ul class="ll-assure">{assurances}</ul>
+    </div>
+    <div class="ll-impact">
+      <h3>{e(L['impact_title'])}</h3>
+      <p>{e(L['impact_body'])}</p>
+    </div>
+  </div>
+
+  <div class="ll-cta">
+    <div>
+      <h2>{e(L['cta_title'])}</h2>
+      <p>{e(L['cta_body'])}</p>
+    </div>
+    <div class="num">{e(SITE['phone'])}<small>{e(L['cta_button'])} &middot; {e(SITE['hours'])}</small></div>
+  </div>
+
+  <p class="ll-foot">{e(L['footnote'])} &nbsp;&middot;&nbsp; {e(SITE['footer_note'])}</p>
+</section>
+"""
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{e(L['meta_title'])}</title>
+<meta name="description" content="Why property owners lease to {e(SITE['org_name'])} in North Texas.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="{e(DOMAIN)}/landlords/">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400..700&display=swap">
+<link rel="stylesheet" href="/assets/css/brochure.css">
+<link rel="stylesheet" href="/assets/css/landlords.css">
+</head>
+<body>
+<div class="toolbar">
+  <b>Property owner flyer</b>
+  <span>One page &middot; prints on US Letter</span>
+  <button class="primary" type="button" onclick="window.print()">Print or save as PDF</button>
+  <a href="/">Website</a>
+</div>
+<main>
+{body}
+</main>
+</body>
+</html>
+"""
+
+
 def build_404():
     body = f"""
 {page_hero("404", "This page went for a walk.", "The link's broken, but the phone still works. Try one of these instead.")}
@@ -1609,6 +1719,8 @@ PAGES = {
     "brochure/index.html": build_brochure,
     # Folded leave-behind, same content, different physical format.
     "trifold/index.html": build_trifold,
+    # One-page flyer for property owners.
+    "landlords/index.html": build_landlords,
     "404.html": build_404,
 }
 
