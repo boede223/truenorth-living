@@ -3,12 +3,12 @@
   "eyebrow": "For property owners",
   "hero_title": "Why property owners partner with TrueNorth Living.",
   "hero_sub": "Protecting your property. Simplifying ownership. Making an impact.",
-  "intro": "TrueNorth Living leases single-family homes in North Texas and runs them as structured sober living residences. One lease, one organization, one point of contact — not a rotating cast of tenants.",
+  "intro": "TrueNorth Living leases single-family homes in North Texas on a 2–3 year corporate lease and runs them as structured sober living residences. One lease, one organization, one point of contact.",
   "points_label": "Six reasons owners choose us",
   "points": [
     {
       "title": "One point of contact",
-      "body": "You lease to TrueNorth Living, not to individual residents. One lease, one payment, one phone number. When something needs attention you call us, and we handle it from there."
+      "body": "The lease is with TrueNorth Living, not with individual residents. The business signs it, the business pays it, and the business is responsible. One lease, one payment, one phone number."
     },
     {
       "title": "Active property oversight",
@@ -24,11 +24,11 @@
     },
     {
       "title": "Strong good-neighbor standards",
-      "body": "Quiet hours, curfews, guest rules and parking expectations are written into the house agreement every resident signs. Neighbors get a quiet, well-kept house — and a number to call if they ever need one."
+      "body": "Quiet hours, curfews, guest rules and parking expectations are written into the agreement every resident signs. Neighbors get a quiet, well-kept house — and a number to call if they need one."
     },
     {
-      "title": "Built for the long term",
-      "body": "We are looking for stable, multi-year property relationships, not short-term arrangements. Turnover costs you money and costs us the community we are trying to build. Our interests line up with yours."
+      "title": "A 2–3 year corporate lease",
+      "body": "We're looking for two- to three-year terms, not short-term arrangements. Turnover costs you money and costs us the community we're trying to build — so our interests line up with yours."
     }
   ],
   "assurances_label": "How the house is run",
@@ -44,5 +44,5 @@
   "cta_title": "Let's talk about your property.",
   "cta_body": "Tell us the address and we'll walk it, talk through what we'd need, and put the specifics in writing. No obligation, and a straight answer either way.",
   "cta_button": "Call or text",
-  "footnote": "Terms including lease length, rent, repair thresholds and responsibilities are set out in a written property agreement negotiated per home."
+  "footnote": "Lease term, rent, repair thresholds and responsibilities are set out in a written property agreement negotiated per home."
 }
