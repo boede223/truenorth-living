@@ -1587,7 +1587,7 @@ def build_landlords():
   </div>
 
   <div class="ll-hero">
-    <p class="eyebrow">{e(L['eyebrow'])}</p>
+    {f'<p class="eyebrow">{e(L["eyebrow"])}</p>' if L.get("eyebrow") else ""}
     <h1>{e(L['hero_title'])}</h1>
     <p class="ll-sub">{e(L['hero_sub'])}</p>
     <p class="ll-intro">{e(L['intro'])}</p>
