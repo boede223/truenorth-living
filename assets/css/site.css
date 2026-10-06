@@ -787,7 +787,14 @@ p { text-wrap: pretty; }
 }
 
 /* People */
-.people { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--sp-4); }
+/* auto-fill with a capped track, not auto-fit with 1fr: with only two people
+   1fr stretched each headshot to ~570px square and they swamped the section.
+   Tracks now top out at 240px however many people there are. */
+.people {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 240px));
+  gap: var(--sp-4);
+}
 .person-photo {
   aspect-ratio: 1; border-radius: var(--radius-lg); overflow: hidden;
   background: linear-gradient(150deg, #1B2E38, #241B14);
@@ -795,7 +802,13 @@ p { text-wrap: pretty; }
   display: grid; place-content: center;
   color: var(--text-dim);
 }
-.person-photo img { width: 100%; height: 100%; object-fit: cover; }
+/* Headshots are portrait going into a square frame. Centre-cropping takes
+   the middle and clips foreheads, so bias the crop upward toward the face. */
+.person-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+}
 .person h3 { font-size: var(--t-lg); }
 .person .role { color: var(--amber); font-size: var(--t-sm); font-weight: 600; margin-bottom: .5rem; }
 .person p { font-size: var(--t-sm); color: var(--text-dim); }
