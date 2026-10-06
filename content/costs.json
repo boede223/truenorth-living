@@ -5,6 +5,13 @@
   "hero_body": "Most people asking this question are doing math in a parking lot. So here it is up front, with nothing buried below the fold.",
   "rates_title": "Rates",
   "rates_note": "Rates are per person and set per house. Payment can be monthly, every two weeks, or weekly — whichever fits how you get paid.",
+  "rates_pending_title": "We're still setting rates",
+  "rates_range_label": "Expected range",
+  "rates_range_low": "1,000",
+  "rates_range_high": "1,300",
+  "rates_range_period": "month",
+  "rates_pending_body": "Exact rates aren't final yet and will depend on the house. We're planning on somewhere between these numbers.",
+  "rates_flex": "Flexible payment — monthly, every two weeks, or weekly if that works better for you. Ask and we'll set it up.",
   "included_title": "What's included",
   "included": [
     "Your bed, furnished, in a shared or private room depending on the house",
@@ -44,12 +51,5 @@
     }
   ],
   "faq_teaser": "Still have questions about money, rules, or how admission works?",
-  "insurance_short": "Sober living is housing, not clinical treatment, so insurance usually doesn't pay for it. It can cover care you receive while living here.",
-  "rates_pending_title": "We're still setting rates",
-  "rates_range_low": "1,000",
-  "rates_range_high": "1,200",
-  "rates_range_period": "month",
-  "rates_range_label": "Expected range",
-  "rates_pending_body": "Exact rates aren't final yet and will depend on the house. We're planning on somewhere between these numbers.",
-  "rates_flex": "Flexible payment — monthly, every two weeks, or weekly if that works better for you. Ask and we'll set it up."
+  "insurance_short": "Sober living is housing, not clinical treatment, so insurance usually doesn't pay for it. It can cover care you receive while living here."
 }
